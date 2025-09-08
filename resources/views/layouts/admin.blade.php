@@ -9,14 +9,23 @@
 <body class="min-h-screen flex bg-gray-100">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-gray-800 text-white flex flex-col">
+    <aside class="w-64 bg-red-600 text-white flex flex-col">
         <div class="p-4 text-xl font-bold border-b border-gray-700">
             Admin Panel
         </div>
 
         <nav class="flex-1 p-4 space-y-2">
-            <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
+            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
                 Dashboard
+            </a>
+            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
+                Master Data
+            </a>
+            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
+                Penawaran
+            </a>
+            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
+                Riwayat Transaksi
             </a>
             {{-- <a href="{{ route('users.index') }}" class="block px-4 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('users.*') ? 'bg-gray-700' : '' }}">
                 Users
@@ -40,7 +49,7 @@
             </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="w-full text-left px-3 py-2 bg-red-600 rounded hover:bg-red-500">
+                <button type="submit" class="w-full text-left text-gray-400 px-3 py-2 bg-white rounded hover:bg-red-500">
                     Log Out
                 </button>
             </form>
