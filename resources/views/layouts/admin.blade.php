@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
+
 <body class="min-h-screen flex bg-gray-100">
 
     <!-- Sidebar -->
@@ -24,11 +26,12 @@
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
                 Penawaran
             </a>
-            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
+            <a href="{{ route('riwayat') }}"
+                class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('riwayat') ? 'bg-red-600' : '' }}">
                 Riwayat Transaksi
             </a>
             {{-- <a href="{{ route('users.index') }}" class="block px-4 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('users.*') ? 'bg-gray-700' : '' }}">
-                Users
+            Users
             </a>
             <a href="{{ route('products.index') }}" class="block px-4 py-2 rounded hover:bg-gray-700 {{ request()->routeIs('products.*') ? 'bg-gray-700' : '' }}">
                 Products
@@ -69,4 +72,5 @@
         </div>
     </main>
 </body>
+
 </html>
