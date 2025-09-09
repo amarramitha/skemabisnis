@@ -59,15 +59,14 @@
             {{-- Tombol Aksi --}}
             <div class="flex space-x-3">
                 <button type="button" id="btnKalkulasi"
-                    class="w-40 bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-3 py-2 rounded-lg shadow text-sm">
+                    class="w-40 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-3 py-2 rounded-lg shadow text-sm">
                     Kalkulasi
                 </button>
                 <button type="submit"
-                    class="w-40 bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-3 py-2 rounded-lg shadow text-sm">
+                    class="w-40 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-3 py-2 rounded-lg shadow text-sm">
                     Simpan
                 </button>
             </div>
-
 
         </form>
     </div>
