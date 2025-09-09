@@ -10,8 +10,7 @@
 
 </head>
 
-<body class="min-h-screen flex bg-gray-100">
-
+<body class="h-screen flex bg-gray-100 overflow-hidden">
     <!-- Sidebar -->
     <aside class="w-64 flex-shrink-0 bg-red-600 text-white flex flex-col">
         <!-- Logo / Title -->
@@ -20,28 +19,25 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 p-4 space-y-2">
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             <a href="{{ route('dashboard') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200
                 {{ request()->routeIs('dashboard') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
                 <i data-lucide="home" class="w-5 h-5"></i>
                 Dashboard
             </a>
-
             <a href="{{ route('masterdata') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200
                 {{ request()->routeIs('masterdata') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
                 <i data-lucide="database" class="w-5 h-5"></i>
                 Master Data
             </a>
-
             <a href="{{ route('penawaran') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200
                 {{ request()->routeIs('penawaran') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
                 <i data-lucide="file-text" class="w-5 h-5"></i>
                 Penawaran
             </a>
-
             <a href="{{ route('riwayat') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200
                 {{ request()->routeIs('riwayat') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
@@ -68,23 +64,22 @@
     </aside>
 
     <!-- Main content -->
-    <main class="flex-1 flex flex-col overflow-x-auto">
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
         <!-- Header -->
-        <header class="bg-white shadow p-4 flex justify-between items-center">
+        <header class="bg-white shadow p-4 flex justify-between items-center flex-shrink-0">
             <h1 class="text-xl font-semibold">@yield('title', 'Dashboard')</h1>
         </header>
 
         <!-- Content -->
-        <div class="p-6 min-w-full">
+        <div class="p-6 flex-1 overflow-y-auto">
             @yield('content')
         </div>
     </main>
 
     <script>
-    lucide.createIcons();
-</script>
-
-
+        lucide.createIcons();
+    </script>
 </body>
+
 
 </html>

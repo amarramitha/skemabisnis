@@ -72,30 +72,47 @@
     </div>
 
     {{-- Ringkasan Setelah Kalkulasi --}}
-    <div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Ringkasan Penawaran</h3>
-        <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden">
-            <tbody class="text-gray-700 text-sm divide-y divide-gray-200">
-                <tr>
-                    <td class="px-4 py-3 font-semibold">Total Harga Produk</td>
-                    <td class="px-4 py-3" id="ringkasanTotal">-</td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-3 font-semibold">Penawaran Konsumen</td>
-                    <td class="px-4 py-3" id="ringkasanPenawaran">-</td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-3 font-semibold">Status</td>
-                    <td class="px-4 py-3" id="ringkasanStatus">-</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    {{-- Ringkasan Setelah Kalkulasi --}}
+<div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-lg p-6">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Ringkasan Penawaran</h3>
+    <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden">
+        <tbody class="text-gray-700 text-sm divide-y divide-gray-200">
+            <tr>
+                <td class="px-4 py-3 font-semibold">Total Harga Produk</td>
+                <td class="px-4 py-3" id="ringkasanTotal">-</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3 font-semibold">Penawaran Konsumen</td>
+                <td class="px-4 py-3" id="ringkasanPenawaran">-</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3 font-semibold">Status</td>
+                <td class="px-4 py-3" id="ringkasanStatus">-</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-3 font-semibold">Harga Akhir</td>
+                <td class="px-4 py-3" id="ringkasanWinwin">-</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 </div>
 
 {{-- Script --}}
 <script>
-    // Tambah produk baru
+    function hitungTotal() {
+        let total = 0;
+        document.querySelectorAll('.produkSelect').forEach(select => {
+            let harga = select.options[select.selectedIndex]?.getAttribute('data-harga');
+            if (harga) {
+                total += parseInt(harga);
+            }
+        });
+        document.getElementById('totalHarga').value = total > 0 ? "Rp " + total.toLocaleString('id-ID') : "";
+        return total;
+    }
+
     document.getElementById('tambahProduk').addEventListener('click', function() {
         let wrapper = document.getElementById('produkWrapper');
         let item = document.querySelector('.produkItem').cloneNode(true);
@@ -103,49 +120,50 @@
         wrapper.appendChild(item);
 
         addRemoveEvent(item.querySelector('.hapusProduk'));
+        item.querySelector('.produkSelect').addEventListener('change', hitungTotal);
     });
 
-    // Hapus produk
     function addRemoveEvent(button) {
         button.addEventListener('click', function() {
             if (document.querySelectorAll('.produkItem').length > 1) {
                 this.parentElement.remove();
+                hitungTotal();
             }
         });
     }
     document.querySelectorAll('.hapusProduk').forEach(addRemoveEvent);
 
-    // Kalkulasi total harga + ringkasan
+    document.querySelectorAll('.produkSelect').forEach(select => {
+        select.addEventListener('change', hitungTotal);
+    });
+
     document.getElementById('btnKalkulasi').addEventListener('click', function() {
-        let total = 0;
-
-        document.querySelectorAll('.produkSelect').forEach(select => {
-            let harga = select.options[select.selectedIndex]?.getAttribute('data-harga');
-            if (harga) {
-                total += parseInt(harga);
-            }
-        });
-
+        let total = hitungTotal();
         let penawaran = parseInt(document.getElementById('penawaran').value) || 0;
 
-        // Update field total harga
-        document.getElementById('totalHarga').value = "Rp " + total.toLocaleString('id-ID');
+        // Tentukan status
+        let status = "-";
+        if (penawaran > 0) {
+            if (penawaran >= total) {
+                status = "✅ Diterima (konsumen setuju dengan harga)";
+            } else if (penawaran >= total * 0.8) {
+                status = "⚖️ Counter (masih bisa dinegosiasi)";
+            } else {
+                status = "❌ Ditolak (terlalu rendah)";
+            }
+        }
+
+        // Win-win solution
+        let winwin = penawaran > 0 ? Math.round((total + penawaran) / 2) : total;
 
         // Update ringkasan
         document.getElementById('ringkasanTotal').innerText = "Rp " + total.toLocaleString('id-ID');
         document.getElementById('ringkasanPenawaran').innerText = penawaran ? "Rp " + penawaran.toLocaleString('id-ID') : "-";
-
-        let status = "-";
-        if (penawaran >= total) {
-            status = "Diterima";
-        } else if (penawaran >= total * 0.8) {
-            status = "Counter Offer";
-        } else if (penawaran > 0) {
-            status = "Ditolak";
-        }
         document.getElementById('ringkasanStatus').innerText = status;
+        document.getElementById('ringkasanWinwin').innerText = "Rp " + winwin.toLocaleString('id-ID');
 
         document.getElementById('ringkasanBox').classList.remove('hidden');
     });
 </script>
+
 @endsection
