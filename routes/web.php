@@ -15,6 +15,13 @@ Route::get('/admin/riwayat', function () {
     return view('admin.riwayat');
 })->name('riwayat')->middleware(['auth']);
 
+<<<<<<< Updated upstream
+=======
+Route::get('/admin/masterdata', function () {
+    return view('admin.masterdata');
+})->name('masterdata')->middleware(['auth']);
+
+>>>>>>> Stashed changes
 Route::get('/admin/penawaran', function () {
     return view('admin.penawaran');
 })->name('penawaran')->middleware(['auth']);
