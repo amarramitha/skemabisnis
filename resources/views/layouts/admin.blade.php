@@ -23,7 +23,8 @@
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
                 Master Data
             </a>
-            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('dashboard') ? 'bg-red-600' : '' }}">
+            <a href="{{ route('penawaran') }}"
+                class="block px-4 py-2 text-white rounded hover:bg-red-700 {{ request()->routeIs('penawaran') ? 'bg-red-600' : '' }}">
                 Penawaran
             </a>
             <a href="{{ route('riwayat') }}"
