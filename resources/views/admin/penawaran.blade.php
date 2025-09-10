@@ -53,7 +53,7 @@
                 <label class="block text-sm font-medium text-gray-600 mb-2">Harga maksimum diskon</label>
                 <input type="number" name="penawaran" id="penawaran"
                     class="w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2"
-                    placeholder="Masukkan harga tawar">
+                    placeholder="Harga setelah diskon">
             </div>
 
             {{-- Tombol Aksi --}}
@@ -73,9 +73,17 @@
 
     {{-- Form Kalkulasi Harga --}}
     <div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Form Kalkulasi Harga</h3>
+        <h3 class="flex items-center text-lg font-semibold text-gray-700 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-red-500 mr-2"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 17v-6a2 2 0 012-2h0a2 2 0 012 2v6m-6 0H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-4" />
+            </svg>
+            Detail
+        </h3>
         <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden text-sm">
-            <thead class="bg-gray-100 text-gray-700 font-semibold">
+            <thead class="bg-red-500 text-gray-100 font-semibold">
                 <tr>
                     <th class="px-4 py-3 text-left">Produk</th>
                     <th class="px-4 py-3 text-right">Harga Awal</th>
