@@ -50,7 +50,7 @@
 
             {{-- Input Penawaran --}}
             <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Penawaran Konsumen</label>
+                <label class="block text-sm font-medium text-gray-600 mb-2">Harga maksimum diskon</label>
                 <input type="number" name="penawaran" id="penawaran"
                     class="w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2"
                     placeholder="Masukkan harga tawar">
@@ -71,58 +71,66 @@
         </form>
     </div>
 
-    {{-- Ringkasan Setelah Kalkulasi --}}
-    {{-- Ringkasan Setelah Kalkulasi --}}
-<div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-lg p-6">
-    <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Ringkasan Penawaran</h3>
-    <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden">
-        <tbody class="text-gray-700 text-sm divide-y divide-gray-200">
-            <tr>
-                <td class="px-4 py-3 font-semibold">Total Harga Produk</td>
-                <td class="px-4 py-3" id="ringkasanTotal">-</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-3 font-semibold">Penawaran Konsumen</td>
-                <td class="px-4 py-3" id="ringkasanPenawaran">-</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-3 font-semibold">Status</td>
-                <td class="px-4 py-3" id="ringkasanStatus">-</td>
-            </tr>
-            <tr>
-                <td class="px-4 py-3 font-semibold">Harga Akhir</td>
-                <td class="px-4 py-3" id="ringkasanWinwin">-</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    {{-- Form Kalkulasi Harga --}}
+    <div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Form Kalkulasi Harga</h3>
+        <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden text-sm">
+            <thead class="bg-gray-100 text-gray-700 font-semibold">
+                <tr>
+                    <th class="px-4 py-3 text-left">Produk</th>
+                    <th class="px-4 py-3 text-right">Harga Awal</th>
+                    <th class="px-4 py-3 text-right">Harga Setelah Diskon (20%)</th>
+                </tr>
+            </thead>
+            <tbody id="tabelRingkasan" class="divide-y divide-gray-200 text-gray-700">
+                {{-- Baris produk akan diisi lewat JS --}}
+            </tbody>
+            <tfoot class="bg-gray-50 font-semibold text-gray-800">
+                <tr>
+                    <td class="px-4 py-3 text-right">Total:</td>
+                    <td class="px-4 py-3 text-right" id="totalAwal">-</td>
+                    <td class="px-4 py-3 text-right" id="totalDiskon">-</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
 
 </div>
 
-{{-- Script --}}
 <script>
-    function hitungTotal() {
-        let total = 0;
-        document.querySelectorAll('.produkSelect').forEach(select => {
-            let harga = select.options[select.selectedIndex]?.getAttribute('data-harga');
-            if (harga) {
-                total += parseInt(harga);
-            }
-        });
-        document.getElementById('totalHarga').value = total > 0 ? "Rp " + total.toLocaleString('id-ID') : "";
-        return total;
+    // format rupiah untuk tampilan
+    function formatRupiah(n) {
+        return "Rp " + n.toLocaleString('id-ID');
     }
 
-    document.getElementById('tambahProduk').addEventListener('click', function() {
-        let wrapper = document.getElementById('produkWrapper');
-        let item = document.querySelector('.produkItem').cloneNode(true);
-        item.querySelector('select').selectedIndex = 0;
-        wrapper.appendChild(item);
+    // Hitung total asli dan total setelah diskon 20%
+    function hitungTotal() {
+        let totalAwal = 0;
+        let totalDiskon = 0;
 
-        addRemoveEvent(item.querySelector('.hapusProduk'));
-        item.querySelector('.produkSelect').addEventListener('change', hitungTotal);
-    });
+        document.querySelectorAll('.produkSelect').forEach(select => {
+            let opt = select.options[select.selectedIndex];
+            let hargaAwal = parseInt(opt?.getAttribute('data-harga')) || 0;
+            if (hargaAwal > 0) {
+                totalAwal += hargaAwal;
+                totalDiskon += Math.round(hargaAwal * 0.8); // diskon 20%
+            }
+        });
 
+        // tampilkan total asli (sebelum diskon) di field Total Harga (tampilan)
+        document.getElementById('totalHarga').value = totalAwal > 0 ? formatRupiah(totalAwal) : "";
+
+        // isi field penawaran (nilai numerik = total setelah diskon)
+        document.getElementById('penawaran').value = totalDiskon > 0 ? totalDiskon : "";
+
+        return {
+            totalAwal,
+            totalDiskon
+        };
+    }
+
+    // helper untuk menambahkan event remove pada tombol hapus
     function addRemoveEvent(button) {
         button.addEventListener('click', function() {
             if (document.querySelectorAll('.produkItem').length > 1) {
@@ -131,39 +139,77 @@
             }
         });
     }
+
+    // initial attach remove events (untuk item pertama)
     document.querySelectorAll('.hapusProduk').forEach(addRemoveEvent);
 
+    // ketika produk berubah, hitung ulang
     document.querySelectorAll('.produkSelect').forEach(select => {
         select.addEventListener('change', hitungTotal);
     });
 
-    document.getElementById('btnKalkulasi').addEventListener('click', function() {
-        let total = hitungTotal();
-        let penawaran = parseInt(document.getElementById('penawaran').value) || 0;
+    // tombol tambah produk: clone item, attach listener, hitung ulang saat berubah
+    document.getElementById('tambahProduk').addEventListener('click', function() {
+        let wrapper = document.getElementById('produkWrapper');
+        let item = document.querySelector('.produkItem').cloneNode(true);
 
-        // Tentukan status
-        let status = "-";
-        if (penawaran > 0) {
-            if (penawaran >= total) {
-                status = "✅ Diterima (konsumen setuju dengan harga)";
-            } else if (penawaran >= total * 0.8) {
-                status = "⚖️ Counter (masih bisa dinegosiasi)";
-            } else {
-                status = "❌ Ditolak (terlalu rendah)";
-            }
+        // reset pilihan
+        let sel = item.querySelector('select');
+        if (sel) sel.selectedIndex = 0;
+
+        wrapper.appendChild(item);
+
+        // attach events ke item baru
+        addRemoveEvent(item.querySelector('.hapusProduk'));
+        let newSelect = item.querySelector('.produkSelect');
+        if (newSelect) {
+            newSelect.addEventListener('change', hitungTotal);
         }
 
-        // Win-win solution
-        let winwin = penawaran > 0 ? Math.round((total + penawaran) / 2) : total;
+        // hitung ulang setelah menambah
+        hitungTotal();
+    });
 
-        // Update ringkasan
-        document.getElementById('ringkasanTotal').innerText = "Rp " + total.toLocaleString('id-ID');
-        document.getElementById('ringkasanPenawaran').innerText = penawaran ? "Rp " + penawaran.toLocaleString('id-ID') : "-";
-        document.getElementById('ringkasanStatus').innerText = status;
-        document.getElementById('ringkasanWinwin').innerText = "Rp " + winwin.toLocaleString('id-ID');
+    // tombol Kalkulasi: bangun tabel perbandingan dan tampilkan totals
+    document.getElementById('btnKalkulasi').addEventListener('click', function() {
+        let tbody = document.getElementById('tabelRingkasan');
+        tbody.innerHTML = ""; // reset tabel
 
+        let totals = hitungTotal();
+        let totalAwal = totals.totalAwal;
+        let totalDiskon = totals.totalDiskon;
+
+        // isi baris per produk
+        document.querySelectorAll('.produkSelect').forEach(select => {
+            let opt = select.options[select.selectedIndex];
+            let namaProduk = opt?.value || "-";
+            let hargaAwal = parseInt(opt?.getAttribute('data-harga')) || 0;
+            if (hargaAwal > 0) {
+                let hargaDiskon = Math.round(hargaAwal * 0.8);
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="px-4 py-3">${namaProduk}</td>
+                        <td class="px-4 py-3 text-right text-red-600"> ${formatRupiah(hargaAwal)} </td>
+                        <td class="px-4 py-3 text-right text-green-700 font-medium"> ${formatRupiah(hargaDiskon)} </td>
+                    </tr>
+                `;
+            }
+        });
+
+        // update total di footer tabel
+        document.getElementById('totalAwal').innerText = totalAwal > 0 ? formatRupiah(totalAwal) : "-";
+        document.getElementById('totalDiskon').innerText = totalDiskon > 0 ? formatRupiah(totalDiskon) : "-";
+
+        // pastikan box kalkulasi terlihat
         document.getElementById('ringkasanBox').classList.remove('hidden');
     });
+
+    // jalankan hitung awal kalau ada opsi default
+    document.addEventListener('DOMContentLoaded', function() {
+        hitungTotal();
+    });
 </script>
+
+
 
 @endsection

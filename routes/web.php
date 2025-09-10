@@ -19,6 +19,11 @@ Route::get('/admin/masterdata', function () {
     return view('admin.masterdata');
 })->name('masterdata')->middleware(['auth']);
 
+Route::get('/admin/masterdata/input', function () {
+    return view('admin.inputdata');
+})->name('masterdata.input')->middleware(['auth']);;
+
+
 Route::get('/admin/penawaran', function () {
     return view('admin.penawaran');
 })->name('penawaran')->middleware(['auth']);
