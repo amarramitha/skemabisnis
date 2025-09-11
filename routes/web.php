@@ -45,6 +45,7 @@ Route::post('/admin/masterdata/inputproduk', [MasterDataController::class, 'stor
     ->name('masterdata.produk.store')
     ->middleware(['auth']);
 
+
 Route::get('/admin/penawaran', [PenawaranController::class, 'create'])
     ->name('penawaran.create')
     ->middleware(['auth']);
@@ -52,6 +53,26 @@ Route::get('/admin/penawaran', [PenawaranController::class, 'create'])
 Route::post('/admin/penawaran', [PenawaranController::class, 'store'])
     ->name('penawaran.store')
     ->middleware(['auth']);
+
+// Master Data Produk
+Route::get('/masterdata/produk', [MasterDataController::class, 'indexProduk'])->name('masterdata.indexproduk');
+Route::get('/masterdata/produk/create', [MasterDataController::class, 'createProduk'])->name('masterdata.inputproduk');
+Route::post('/masterdata/produk/store', [MasterDataController::class, 'storeProduk'])->name('masterdata.storeproduk');
+
+// Edit & Update
+Route::get('/masterdata/produk/{id}/edit', [MasterDataController::class, 'editProduk'])->name('produk.edit');
+Route::put('/masterdata/produk/{id}', [MasterDataController::class, 'updateProduk'])->name('produk.update');
+
+
+// Hapus
+Route::delete('/masterdata/produk/{id}', [MasterDataController::class, 'destroyProduk'])->name('produk.destroy');
+
+
+/* ----------------- PENAWARAN ----------------- */
+Route::get('/admin/penawaran', function () {
+    return view('admin.penawaran');
+})->name('penawaran')->middleware(['auth']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -3,19 +3,19 @@
 @section('title', 'Riwayat Transaksi')
 
 @section('content')
-<div class="container mx-auto px-6 py-6" 
-     x-data="{ show: false, transaksi: { nama: '', items: [], total: 0, totalDiskon: 0, akhir: 0 } }">
+<div class="container mx-auto px-6 py-6"
+    x-data="{ show: false, transaksi: { nama: '', items: [], total: 0, totalDiskon: 0, akhir: 0 } }">
 
     {{-- Flash Message (opsional) --}}
     @if (session('success'))
-        <div class="mb-4 p-4 text-green-700 bg-green-100 rounded-lg shadow">
-            {{ session('success') }}
-        </div>
+    <div class="mb-4 p-4 text-green-700 bg-green-100 rounded-lg shadow">
+        {{ session('success') }}
+    </div>
     @endif
 
     <div class="mb-4">
         <h2 class="text-xl font-semibold text-gray-800">Riwayat Transaksi</h2>
-        
+
     </div>
 
     <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
@@ -105,9 +105,9 @@
                                 <td class="px-3 py-2 border" x-text="`Rp ${item.harga.toLocaleString()}`"></td>
                                 <td class="px-3 py-2 border text-center" x-text="item.qty"></td>
                                 <td class="px-3 py-2 border text-center" x-text="item.diskon + '%'"></td>
-                                <td class="px-3 py-2 border" 
+                                <td class="px-3 py-2 border"
                                     x-text="`Rp ${((item.harga * item.qty) * (item.diskon/100)).toLocaleString()}`"></td>
-                                <td class="px-3 py-2 border" 
+                                <td class="px-3 py-2 border"
                                     x-text="`Rp ${((item.harga * item.qty) - ((item.harga * item.qty) * (item.diskon/100))).toLocaleString()}`"></td>
                             </tr>
                         </template>
