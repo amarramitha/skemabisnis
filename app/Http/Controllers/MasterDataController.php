@@ -111,4 +111,16 @@ public function storeProduk(Request $request)
         return redirect()->route('masterdata.indexproduk')
             ->with('success', 'Produk berhasil diperbarui');
     }
+
+    // ==============================
+    // HAPUS PRODUK
+    // ==============================
+    public function destroyProduk($id)
+    {
+        $produk = Produk::findOrFail($id);
+        $produk->delete();
+
+        return redirect()->route('masterdata.indexproduk')
+            ->with('success', 'Produk berhasil dihapus');
+    }
 }
