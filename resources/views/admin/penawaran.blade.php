@@ -57,7 +57,7 @@
 
             {{-- Input Penawaran --}}
             <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Harga maksimum diskon</label>
+                <label class="block text-sm font-medium text-gray-600 mb-2">Total Harga Akhir</label>
                 <input type="number" name="penawaran" id="penawaran"
                     class="w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2"
                     placeholder="Harga setelah diskon">
