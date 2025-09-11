@@ -69,9 +69,9 @@ Route::delete('/masterdata/produk/{id}', [MasterDataController::class, 'destroyP
 
 
 /* ----------------- PENAWARAN ----------------- */
-Route::get('/admin/penawaran', function () {
-    return view('admin.penawaran');
-})->name('penawaran')->middleware(['auth']);
+Route::get('/admin/penawaran', [PenawaranController::class, 'create'])
+    ->name('penawaran.create')
+    ->middleware(['auth']);
 
 
 Route::middleware('auth')->group(function () {
