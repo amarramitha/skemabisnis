@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Produk;
+use App\Models\Penawaran;
+use Illuminate\Http\Request;
+
+class PenawaranController extends Controller
+{
+    public function create()
+    {
+        $produk = Produk::all();
+        return view('admin.penawaran', compact('produk'));
+    }
+
+    public function store(Request $request)
+{
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'produk' => 'required|array|min:1',
+    ]);
+
+    $produkIds = $request->input('produk');
+    $totalAwal = 0;
+    $totalAkhir = 0;
+    $totalDiskon = 0;
+
+    // Simpan penawaran umum dulu
+    $penawaran = Penawaran::create([
+        'nama' => $request->nama,
+        'total_harga' => 0, // nanti diupdate
+        'total_diskon' => 0,
+        'total_akhir' => 0,
+    ]);
+
+    foreach ($produkIds as $id) {
+        $p = Produk::find($id);
+        if (!$p) continue;
+
+        $hargaAwal = $p->harga;
+        $diskon = $p->diskonmaks ?? 0;
+        $ppn = 11;
+
+        $potongan = round($hargaAwal * ($diskon / 100));
+        $hargaDiskon = $hargaAwal - $potongan;
+        $ppnNominal = round($hargaDiskon * ($ppn / 100));
+        $hargaAkhir = $hargaDiskon + $ppnNominal;
+
+        $totalAwal += $hargaAwal;
+        $totalDiskon += $potongan;
+        $totalAkhir += $hargaAkhir;
+
+        // Simpan tiap produk
+        $penawaran->produk()->create([
+            'produk_id' => $p->id,
+            'harga_awal' => $hargaAwal,
+            'diskon' => $diskon,
+            'harga_akhir' => $hargaAkhir,
+        ]);
+    }
+
+    // Update total di tabel penawaran
+    $penawaran->update([
+        'total_harga' => $totalAwal,
+        'total_diskon' => $totalDiskon,
+        'total_akhir' => $totalAkhir,
+    ]);
+
+    return redirect()->route('penawaran.create')
+                     ->with('success', 'Penawaran berhasil disimpan!');
+}
+
+
+}

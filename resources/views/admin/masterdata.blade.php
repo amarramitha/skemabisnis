@@ -20,7 +20,7 @@
                     <th class="px-6 py-3 text-left text-sm font-semibold">Kategori Produk</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold">Nama Produk</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold">Harga</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold">PPn 11%</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold">PPN 11%</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold">Total</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold">Diskon Maksimal</th>
                 </tr>

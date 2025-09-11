@@ -45,4 +45,11 @@ class Produk extends Model
     {
         return $this->harga_minimal + $this->ppn_harga_minimal;
     }
+
+    public function penawaran()
+{
+    return $this->belongsToMany(Penawaran::class, 'penawaran_produk')
+                ->withPivot('harga_awal', 'diskon', 'harga_akhir')
+                ->withTimestamps();
+}
 }

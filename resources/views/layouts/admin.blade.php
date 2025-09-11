@@ -59,12 +59,13 @@
                 </a>
             </div>
 
-            <a href="{{ route('penawaran') }}"
-                class="flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300
-            {{ request()->routeIs('penawaran') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
-                <i data-lucide="file-text" class="w-5 h-5"></i>
-                <span class="hidden group-hover:inline opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">Penawaran</span>
-            </a>
+            <a href="{{ route('penawaran.create') }}"
+    class="flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300
+        {{ request()->routeIs('penawaran.create') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
+    <i data-lucide="file-text" class="w-5 h-5"></i>
+    <span class="hidden group-hover:inline opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">Penawaran</span>
+</a>
+
 
             <a href="{{ route('riwayat') }}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300
