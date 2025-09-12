@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Penawaran extends Model
 {
-    use HasFactory;
-
     protected $table = 'penawaran';
 
     protected $fillable = [
         'nama',
         'total_harga',
         'total_diskon',
-        'total_akhir'
+        'total_akhir',
+        'total_diskon_persen',
     ];
 
-    // Relasi ke PenawaranProduk
+    /**
+     * Relasi ke detail produk
+     */
     public function items()
     {
         return $this->hasMany(PenawaranProduk::class, 'penawaran_id');

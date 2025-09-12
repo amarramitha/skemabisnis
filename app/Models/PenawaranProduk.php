@@ -2,33 +2,38 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PenawaranProduk extends Model
 {
-    use HasFactory;
-
-    // Nama tabel sesuai di database
     protected $table = 'penawaran_produk';
 
     protected $fillable = [
         'penawaran_id',
         'produk_id',
-        'harga_awal',
+        'qty',
+        'harga_satuan',
+        'harga_total',
         'diskon',
-        'harga_akhir'
+        'diskon_nominal',
+        'harga_setelah_diskon',
+        'ppn_nominal',
+        'harga_akhir',
     ];
 
-    // Relasi ke Produk
+    /**
+     * Relasi balik ke penawaran
+     */
+    public function penawaran()
+    {
+        return $this->belongsTo(Penawaran::class, 'penawaran_id');
+    }
+
+    /**
+     * Relasi ke produk
+     */
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'produk_id');
-    }
-
-    // Relasi ke Penawaran
-    public function penawaran()
-    {
-        return $this->belongsTo(Penawaran::class);
     }
 }
