@@ -108,7 +108,7 @@ public function storeProduk(Request $request)
             'jenis'       => $request->jenis,
         ]);
 
-        return redirect()->route('masterdata.indexproduk')
+        return redirect()->route('masterdata')
             ->with('success', 'Produk berhasil diperbarui');
     }
 
@@ -120,7 +120,7 @@ public function storeProduk(Request $request)
         $produk = Produk::findOrFail($id);
         $produk->delete();
 
-        return redirect()->route('masterdata.indexproduk')
+        return redirect()->route('masterdata')
             ->with('success', 'Produk berhasil dihapus');
     }
 }

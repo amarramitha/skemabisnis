@@ -13,71 +13,34 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/admin/riwayat', function () {
-    return view('admin.riwayat');
-})->name('riwayat')->middleware(['auth']);
-
-Route::get('/admin/showpenawaran', function () {
-    return view('admin.showpenawaran');
-})->name('showpenawaran')->middleware(['auth']);
-
-Route::get('/admin/masterdata', [MasterDataController::class, 'indexProduk'])
-    ->name('masterdata')
-    ->middleware(['auth']);
-
 /* ----------------- MASTER DATA ----------------- */
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-// Kategori
-Route::get('/admin/masterdata/inputkategori', [MasterDataController::class, 'createKategori'])
-    ->name('masterdata.inputkategori')
-    ->middleware(['auth']);
+    // Master Data Produk
+    Route::get('/masterdata', [MasterDataController::class, 'indexProduk'])->name('masterdata');
+    
+    Route::get('/masterdata/inputkategori', [MasterDataController::class, 'createKategori'])->name('masterdata.inputkategori');
+    Route::post('/masterdata/inputkategori', [MasterDataController::class, 'storeKategori'])->name('masterdata.kategori.store');
 
-Route::post('/admin/masterdata/inputkategori', [MasterDataController::class, 'storeKategori'])
-    ->name('masterdata.kategori.store')
-    ->middleware(['auth']);
+    Route::get('/masterdata/inputproduk', [MasterDataController::class, 'createProduk'])->name('masterdata.inputproduk');
+    Route::post('/masterdata/inputproduk', [MasterDataController::class, 'storeProduk'])->name('masterdata.produk.store');
+    Route::get('/masterdata/produk/{id}/edit', [MasterDataController::class, 'editProduk'])->name('produk.edit');
+    Route::put('/masterdata/produk/{id}', [MasterDataController::class, 'updateProduk'])->name('produk.update');
+    Route::delete('/masterdata/produk/{id}', [MasterDataController::class, 'destroyProduk'])->name('produk.destroy');
 
-// Produk
-Route::get('/admin/masterdata/inputproduk', [MasterDataController::class, 'createProduk'])
-    ->name('masterdata.inputproduk')
-    ->middleware(['auth']);
+    /* ----------------- PENAWARAN ----------------- */
+    Route::get('/penawaran', [PenawaranController::class, 'create'])->name('penawaran.create');
+    Route::post('/penawaran', [PenawaranController::class, 'store'])->name('penawaran.store');
 
-Route::post('/admin/masterdata/inputproduk', [MasterDataController::class, 'storeProduk'])
-    ->name('masterdata.produk.store')
-    ->middleware(['auth']);
+    // Riwayat Penawaran
+    Route::get('/riwayat', [PenawaranController::class, 'index'])->name('penawaran.riwayat');
+});
 
-
-Route::get('/admin/penawaran', [PenawaranController::class, 'create'])
-    ->name('penawaran.create')
-    ->middleware(['auth']);
-
-Route::post('/admin/penawaran', [PenawaranController::class, 'store'])
-    ->name('penawaran.store')
-    ->middleware(['auth']);
-
-// Master Data Produk
-Route::get('/masterdata/produk', [MasterDataController::class, 'indexProduk'])->name('masterdata.indexproduk');
-Route::get('/masterdata/produk/create', [MasterDataController::class, 'createProduk'])->name('masterdata.inputproduk');
-Route::post('/masterdata/produk/store', [MasterDataController::class, 'storeProduk'])->name('masterdata.storeproduk');
-
-// Edit & Update
-Route::get('/masterdata/produk/{id}/edit', [MasterDataController::class, 'editProduk'])->name('produk.edit');
-Route::put('/masterdata/produk/{id}', [MasterDataController::class, 'updateProduk'])->name('produk.update');
-
-
-// Hapus
-Route::delete('/masterdata/produk/{id}', [MasterDataController::class, 'destroyProduk'])->name('produk.destroy');
-
-
-/* ----------------- PENAWARAN ----------------- */
-Route::get('/admin/penawaran', [PenawaranController::class, 'create'])
-    ->name('penawaran.create')
-    ->middleware(['auth']);
-
-
+/* ----------------- PROFILE ----------------- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

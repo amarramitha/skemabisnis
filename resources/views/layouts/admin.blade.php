@@ -67,7 +67,7 @@
 </a>
 
 
-            <a href="{{ route('riwayat') }}"
+            <a href="{{ route('penawaran.riwayat') }}"
                 class="flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300
             {{ request()->routeIs('riwayat') ? 'bg-red-700 text-white font-bold shadow-md' : 'text-white hover:bg-red-700' }}">
                 <i data-lucide="history" class="w-5 h-5"></i>

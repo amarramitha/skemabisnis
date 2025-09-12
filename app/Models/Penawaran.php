@@ -12,14 +12,15 @@ class Penawaran extends Model
     protected $table = 'penawaran';
 
     protected $fillable = [
-        'nama', 
-        'total_harga', 
-        'total_diskon', 
+        'nama',
+        'total_harga',
+        'total_diskon',
         'total_akhir'
     ];
 
-    public function produk()
+    // Relasi ke PenawaranProduk
+    public function items()
     {
-        return $this->hasMany(PenawaranProduk::class);
+        return $this->hasMany(PenawaranProduk::class, 'penawaran_id');
     }
 }
