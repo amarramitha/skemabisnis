@@ -87,7 +87,7 @@
         </div>
 
         <div class="mt-4 text-right">
-            <a href="{{ route('riwayat') }}" class="text-indigo-600 hover:underline text-sm font-medium">
+            <a href="{{ route('penawaran.riwayat') }}" class="text-indigo-600 hover:underline text-sm font-medium">
                 Lihat Semua →
             </a>
         </div>
