@@ -95,21 +95,72 @@
         </div>
     </aside>
 
-    <!-- Main content -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        <!-- Header -->
-        <header class="bg-white shadow p-4 flex justify-between items-center flex-shrink-0">
-            <h1 class="text-xl font-semibold">@yield('title', 'Dashboard')</h1>
-        </header>
+<!-- Main content  -->
+<main class="flex-1 flex flex-col bg-red-600 overflow-hidden">
+    <!-- Wrapper biar konten ngambang -->
+    <div class="m-3 bg-white rounded-3xl shadow-lg flex-1 flex flex-col overflow-hidden">
+        
+        {{-- <!-- Header -->
+        <header class="px-6 py-3 border-b border-gray-200">
+    <h2 class="text-lg font-semibold text-gray-700">
+        @yield('title', 'Dashboard')
+    </h2>
+</header> --}}
 
         <!-- Content -->
-        <div class="p-6 flex-1 overflow-y-auto">
+        <div class="flex-1 overflow-y-auto">
             @yield('content')
         </div>
-    </main>
+
+    </div>
+</main>
+
 
     <script>
         lucide.createIcons();
+    </script>
+
+    @stack('scripts')
+
+    {{-- SweetAlert2 Toast Global --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            })
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true
+            })
+        @endif
+
+        @if ($errors->any())
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: "Gagal!",
+                text: "{{ $errors->first() }}",
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true
+            })
+        @endif
     </script>
 </body>
 

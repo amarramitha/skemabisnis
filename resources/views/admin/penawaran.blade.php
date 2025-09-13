@@ -4,21 +4,28 @@
 
 @section('content')
 <div class="container mx-auto px-6 py-6">
-    <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
-        <h2 class="text-lg font-semibold mb-6 text-gray-700">Tambah Penawaran Baru</h2>
 
-        <form action="{{ route('penawaran.store') }}" method="POST" id="formPenawaran" class="space-y-6">
+    {{-- Form Penawaran --}}
+    <div class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 p-8 border border-gray-100 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-3 text-center">
+            Tambah Penawaran Baru
+        </h2>
+
+        <form action="{{ route('penawaran.store') }}" method="POST" id="formPenawaran" class="space-y-5">
             @csrf
+
+            {{-- Nama Konsumen --}}
             <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Nama Konsumen</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Konsumen</label>
                 <input type="text" name="nama"
-                    class="w-full border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2"
+                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 px-4 py-2"
                     placeholder="Masukkan nama konsumen" required>
             </div>
 
+            {{-- Produk --}}
             <div id="produkWrapper" class="space-y-4">
                 <div class="produkItem flex space-x-4 items-center">
-                    <select name="produk[]" class="w-1/2 produkSelect border-gray-300 rounded-xl shadow-sm px-3 py-2">
+                    <select name="produk[]" class="w-1/2 produkSelect border-gray-300 rounded-lg shadow-sm px-3 py-2">
                         <option value="">-- Pilih Produk --</option>
                         @foreach ($produk as $p)
                         <option value="{{ $p->id }}"
@@ -30,40 +37,55 @@
                         @endforeach
                     </select>
 
-                    <input type="number" name="qty[]" class="qtyInput w-20 border-gray-300 rounded-xl shadow-sm px-3 py-2 text-center" min="1" value="1">
+                    <input type="number" name="qty[]" class="qtyInput w-20 border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center" min="1" value="1">
 
-                    <button type="button" class="hapusProduk bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl shadow">Hapus</button>
+                    <button type="button" class="hapusProduk bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg shadow">
+                        Hapus
+                    </button>
                 </div>
             </div>
 
             <button type="button" id="tambahProduk"
-                class="w-40 mt-3 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-xl shadow">
+                class="mt-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow">
                 Tambah Produk
             </button>
 
+            {{-- Total Harga --}}
             <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Total Harga</label>
-                <input type="text" id="totalHarga" readonly class="w-full border-gray-300 bg-gray-100 rounded-xl shadow-sm px-4 py-2 font-semibold text-indigo-700">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Total Diskon</label>
-                <input type="text" id="totalPotongan" readonly class="w-full border-gray-300 bg-gray-100 rounded-xl shadow-sm px-4 py-2 font-semibold text-green-700">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Total Harga Akhir</label>
-                <input type="text" name="penawaran" id="penawaran" readonly class="w-full border-gray-300 rounded-xl shadow-sm px-4 py-2 font-semibold text-indigo-700">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Total Harga</label>
+                <input type="text" id="totalHarga" readonly
+                    class="w-full border-gray-300 bg-gray-100 rounded-lg shadow-sm px-4 py-2 font-semibold text-red-700">
             </div>
 
-            <div class="flex space-x-3">
-                <button type="submit" class="w-40 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-3 py-2 rounded-lg shadow text-sm">Simpan</button>
+            {{-- Total Diskon --}}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Total Diskon</label>
+                <input type="text" id="totalPotongan" readonly
+                    class="w-full border-gray-300 bg-gray-100 rounded-lg shadow-sm px-4 py-2 font-semibold text-green-700">
+            </div>
+
+            {{-- Total Akhir --}}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Total Harga Akhir</label>
+                <input type="text" name="penawaran" id="penawaran" readonly
+                    class="w-full border-gray-300 rounded-lg shadow-sm px-4 py-2 font-semibold text-indigo-700">
+            </div>
+
+            {{-- Tombol --}}
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="submit"
+                    class="px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-sm">
+                    Simpan
+                </button>
             </div>
         </form>
     </div>
 
-    <div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-lg p-6">
-        <h3 class="flex items-center text-lg font-semibold text-gray-700 mb-4">Detail Penawaran</h3>
+    {{-- Ringkasan --}}
+    <div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 p-8 border border-gray-100">
+        <h3 class="text-lg font-bold text-gray-800 mb-6 border-b pb-3">Detail Penawaran</h3>
         <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden text-sm">
-            <thead class="bg-red-500 text-gray-100 font-semibold">
+            <thead class="bg-red-500 text-white font-semibold">
                 <tr>
                     <th class="px-4 py-3 text-left">Produk</th>
                     <th class="px-4 py-3 text-right">Harga Awal</th>
