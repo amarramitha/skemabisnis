@@ -9,30 +9,23 @@
     <h1 class="text-2xl font-bold mb-6">Selamat Datang, Admin 👋</h1>
 
     {{-- Statistik Ringkas --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white p-6 rounded-xl shadow-md">
             <p class="text-sm text-gray-500">Jumlah Produk</p>
-            <h2 class="text-2xl font-bold text-indigo-600">125</h2>
+            <h2 class="text-2xl font-bold text-indigo-600">{{ $jumlahProduk }}</h2>
         </div>
         <div class="bg-white p-6 rounded-xl shadow-md">
             <p class="text-sm text-gray-500">Total Penawaran</p>
-            <h2 class="text-2xl font-bold text-green-600">58</h2>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-sm text-gray-500">Transaksi Berhasil</p>
-            <h2 class="text-2xl font-bold text-blue-600">42</h2>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-sm text-gray-500">Transaksi Ditolak</p>
-            <h2 class="text-2xl font-bold text-red-600">16</h2>
+            <h2 class="text-2xl font-bold text-green-600">{{ $totalPenawaran }}</h2>
         </div>
     </div>
 
-    {{-- Grafik Dummy (pakai gambar statis dulu) --}}
+    {{-- Grafik Penawaran Bulanan --}}
     <div class="bg-white rounded-xl shadow-md p-6 mb-6">
         <h2 class="text-lg font-semibold mb-4">Grafik Penawaran Bulanan</h2>
-        <div class="w-full h-48 flex items-center justify-center text-gray-400 border-2 border-dashed rounded-lg">
-            (Grafik dummy – bisa pakai Chart.js nanti)
+        <div class="w-full">
+            {{-- Tinggi grafik diperkecil --}}
+            <canvas id="penawaranChart" class="w-full h-48"></canvas>
         </div>
     </div>
 
@@ -45,43 +38,23 @@
                     <tr>
                         <th class="px-6 py-3 text-left text-sm font-semibold">#</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Nama Konsumen</th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold">Produk</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Total Harga</th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold">Status</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Tanggal</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 text-sm text-gray-700">
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-3">1</td>
-                        <td class="px-6 py-3">Budi</td>
-                        <td class="px-6 py-3">Laptop ASUS</td>
-                        <td class="px-6 py-3">Rp 10.000.000</td>
-                        <td class="px-6 py-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Diterima</span>
-                        </td>
-                        <td class="px-6 py-3">04 Sep 2025</td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-3">2</td>
-                        <td class="px-6 py-3">Siti</td>
-                        <td class="px-6 py-3">Smartphone Samsung</td>
-                        <td class="px-6 py-3">Rp 3.500.000</td>
-                        <td class="px-6 py-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Proses</span>
-                        </td>
-                        <td class="px-6 py-3">03 Sep 2025</td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-3">3</td>
-                        <td class="px-6 py-3">Andi</td>
-                        <td class="px-6 py-3">Printer Epson</td>
-                        <td class="px-6 py-3">Rp 2.000.000</td>
-                        <td class="px-6 py-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">Ditolak</span>
-                        </td>
-                        <td class="px-6 py-3">02 Sep 2025</td>
-                    </tr>
+                    @forelse ($penawaranTerbaru as $index => $p)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-3">{{ $index + 1 }}</td>
+                            <td class="px-6 py-3">{{ $p->nama }}</td>
+                            <td class="px-6 py-3">Rp {{ number_format($p->total_akhir, 0, ',', '.') }}</td>
+                            <td class="px-6 py-3">{{ $p->created_at->format('d M Y') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-3 text-center text-gray-500">Belum ada penawaran</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -94,6 +67,31 @@
     </div>
 
 </div>
-
-</div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('penawaranChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar', // bisa diganti 'line'
+        data: {
+            labels: @json($labels),
+            datasets: [{
+                label: 'Jumlah Penawaran',
+                data: @json($data),
+                backgroundColor: 'rgba(79, 70, 229, 0.6)', // indigo
+                borderColor: 'rgba(79, 70, 229, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // biar tinggi mengikuti class h-48
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+@endpush

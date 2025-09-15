@@ -4,21 +4,27 @@
 
 @section('content')
 <div class="container mx-auto px-6 py-6"
-     x-data="{
+     x-data="() => ({
         show: false,
         transaksi: { nama: '', items: [], total: 0, totalDiskon: 0, totalDiskonPersen: 0, totalPpn: 0, akhir: 0 },
 
         showDetail(items, nama, total, totalDiskon, totalDiskonPersen, totalAkhir) {
+            // debug (buka console kalau perlu)
+            console.log('showDetail called', { items, nama, total, totalDiskon, totalDiskonPersen, totalAkhir });
+
             this.transaksi.nama = nama ?? '';
-            this.transaksi.items = items || [];
-            this.transaksi.total = total;
-            this.transaksi.totalDiskon = totalDiskon;
-            this.transaksi.totalDiskonPersen = totalDiskonPersen;
-            this.transaksi.akhir = totalAkhir;
-            this.transaksi.totalPpn = this.transaksi.items.reduce((a, it) => a + (it.ppnRp || 0), 0);
+            this.transaksi.items = Array.isArray(items) ? items : [];
+            this.transaksi.total = Number(total) || 0;
+            this.transaksi.totalDiskon = Number(totalDiskon) || 0;
+            this.transaksi.totalDiskonPersen = Number(totalDiskonPersen) || 0;
+            this.transaksi.akhir = Number(totalAkhir) || 0;
+
+            // pastikan setiap item punya ppnRp numeric
+            this.transaksi.totalPpn = this.transaksi.items.reduce((a, it) => a + (Number(it.ppnRp) || 0), 0);
+
             this.show = true;
         }
-     }">
+     })">
 
     {{-- Flash message --}}
     @if(session('success'))
@@ -47,23 +53,26 @@
                         <td class="px-6 py-3 font-medium text-gray-800">{{ $p->nama }}</td>
                         <td class="px-6 py-3">{{ $p->created_at->format('d-m-Y') }}</td>
                         <td class="px-6 py-3 text-center">
+                            {{-- siapkan array item di PHP (tanpa ->toJson) lalu kirim pakai @json --}}
                             @php
-                                $itemsJson = $p->items->map(function($it){
+                                $itemsArray = $p->items->map(function($it){
                                     return [
                                         'produk'      => $it->produk->nama_produk ?? '',
-                                        'qty'         => (int) $it->qty,
-                                        'harga_total' => (float) $it->harga_total,
-                                        'hargaSatuan' => (float) $it->harga_satuan,
+                                        'qty'         => (int) ($it->qty ?? 0),
+                                        'harga_total' => (float) ($it->harga_total ?? 0),
+                                        'hargaSatuan' => (float) ($it->harga_satuan ?? 0),
                                         'diskon'      => (float) ($it->diskon ?? 0),
                                         'diskonRp'    => (float) ($it->diskon_nominal ?? 0),
                                         'ppnRp'       => (float) ($it->ppn_nominal ?? 0),
                                         'hargaAkhir'  => (float) ($it->harga_akhir ?? 0),
                                     ];
-                                })->toJson();
+                                });
                             @endphp
+
                             <button
                                 class="px-4 py-2 bg-blue-900 text-white rounded-lg shadow hover:opacity-90 transition"
-                                @click='showDetail({!! $itemsJson !!}, {!! json_encode($p->nama) !!}, {{ $p->total_harga }}, {{ $p->total_diskon }}, {{ $p->total_diskon_persen }}, {{ $p->total_akhir }})'>
+                                {{-- pakai @json supaya Blade escape/encode dengan benar --}}
+                                @click='showDetail(@json($itemsArray), @json($p->nama), {{ $p->total_harga ?? 0 }}, {{ $p->total_diskon ?? 0 }}, {{ $p->total_diskon_persen ?? 0 }}, {{ $p->total_akhir ?? 0 }})'>
                                 Detail
                             </button>
                         </td>
@@ -79,8 +88,8 @@
         </table>
     </div>
 
-    {{-- Modal --}}
-    <div x-show="show" 
+    {{-- Modal (sama seperti sebelumnya) --}}
+    <div x-show="show"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 scale-90"
          x-transition:enter-end="opacity-100 scale-100"

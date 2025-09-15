@@ -13,6 +13,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/dashboard', [MasterDataController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+
 /* ----------------- MASTER DATA ----------------- */
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 

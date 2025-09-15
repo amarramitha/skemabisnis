@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriProduk;
 use App\Models\Produk;
+use App\Models\Penawaran;
 use Illuminate\Http\Request;
 
 class MasterDataController extends Controller
@@ -122,5 +123,38 @@ public function storeProduk(Request $request)
 
         return redirect()->route('masterdata')
             ->with('success', 'Produk berhasil dihapus');
+    }
+
+    public function dashboard()
+    {
+        $jumlahProduk = Produk::count();
+        $totalPenawaran = Penawaran::count();
+
+        // Ambil data penawaran per bulan
+        $penawaranBulanan = Penawaran::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->pluck('total', 'bulan');
+
+        // Siapkan label bulan (1 → Januari, dst)
+        $labels = [];
+        $data = [];
+        foreach (range(1, 12) as $i) {
+            $labels[] = \Carbon\Carbon::create()->month($i)->translatedFormat('F');
+            $data[] = $penawaranBulanan[$i] ?? 0;
+        }
+
+        $penawaranTerbaru = Penawaran::with('items.produk')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact(
+            'jumlahProduk',
+            'totalPenawaran',
+            'penawaranTerbaru',
+            'labels',
+            'data'
+        ));
     }
 }
