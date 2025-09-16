@@ -14,11 +14,11 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-red-600">
+    <body class="font-sans antialiased bg-blue-950">
         <div class="min-h-screen flex flex-col justify-center items-center p-6">
             
             <!-- Card utama -->
-            <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-lg rounded-2xl border-t-4 border-red-600">
+            <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-lg rounded-2xl border-t-4 border-blue-900">
                 {{ $slot }}
             </div>
 
