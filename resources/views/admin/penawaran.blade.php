@@ -85,7 +85,7 @@
     <div id="ringkasanBox" class="hidden bg-white rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 p-8 border border-gray-100">
         <h3 class="text-lg font-bold text-gray-800 mb-6 border-b pb-3">Detail Penawaran</h3>
         <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden text-sm">
-            <thead class="bg-red-500 text-white font-semibold">
+            <thead class="bg-blue-950 text-white font-semibold">
                 <tr>
                     <th class="px-4 py-3 text-left">Produk</th>
                     <th class="px-4 py-3 text-right">Harga Awal</th>

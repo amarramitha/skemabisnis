@@ -38,7 +38,7 @@
     {{-- Table --}}
     <div class="overflow-x-auto bg-white rounded-xl shadow-md hover:shadow-lg transition">
         <table class="min-w-full table-auto border-collapse">
-            <thead class="bg-red-500 text-white">
+            <thead class="bg-blue-950 text-white">
                 <tr>
                     <th class="px-6 py-3 text-left text-sm font-semibold">#</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold">Nama Konsumen</th>
@@ -70,7 +70,7 @@
                             @endphp
 
                             <button
-                                class="px-4 py-2 bg-blue-900 text-white rounded-lg shadow hover:opacity-90 transition"
+                                class="px-4 py-2 bg-gray-400 text-white rounded-lg shadow hover:opacity-90 transition"
                                 {{-- pakai @json supaya Blade escape/encode dengan benar --}}
                                 @click='showDetail(@json($itemsArray), @json($p->nama), {{ $p->total_harga ?? 0 }}, {{ $p->total_diskon ?? 0 }}, {{ $p->total_diskon_persen ?? 0 }}, {{ $p->total_akhir ?? 0 }})'>
                                 Detail
