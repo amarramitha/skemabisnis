@@ -1,7 +1,7 @@
 <x-guest-layout>
-    <!-- Logo / Avatar -->
+
     <div class="flex justify-center mb-4">
-        {{-- Kalau ada logo aplikasi, ganti path-nya --}}
+       
         <img src="{{ asset('images/logo.png') }}" 
              onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" 
              alt="Logo" 
