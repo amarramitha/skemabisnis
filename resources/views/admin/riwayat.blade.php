@@ -105,7 +105,7 @@
 
             <div class="mb-4 text-gray-700 text-sm">
                 <p><span class="font-semibold">Konsumen:</span> <span x-text="transaksi.nama"></span></p>
-                <p><span class="font-semibold">Jumlah Produk:</span> <span x-text="transaksi.items.length"></span></p>
+                
             </div>
 
             <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-lg border">
