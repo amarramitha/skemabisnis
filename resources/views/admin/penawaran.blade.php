@@ -74,7 +74,7 @@
             {{-- Tombol --}}
             <div class="flex justify-end gap-3 pt-4">
                 <button type="submit"
-                    class="px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-sm">
+                    class="px-5 py-2.5 rounded-lg bg-blue-950 text-white hover:bg-blue-900 shadow-sm">
                     Simpan
                 </button>
             </div>

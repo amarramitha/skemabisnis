@@ -34,7 +34,7 @@
         <h2 class="text-lg font-semibold mb-4">Penawaran Terbaru</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto border-collapse">
-                <thead class="bg-red-500 text-white">
+                <thead class="bg-blue-950 text-white">
                     <tr>
                         <th class="px-6 py-3 text-left text-sm font-semibold">#</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Nama Konsumen</th>

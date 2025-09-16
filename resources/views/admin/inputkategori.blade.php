@@ -17,7 +17,7 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kategori</label>
                 <input type="text" name="nama_kategori"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500" required>
+                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-950 focus:border-blue-950" required>
             </div>
 
             {{-- Tombol --}}
@@ -25,7 +25,7 @@
                 <button type="reset" class="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-600 bg-gray-50 hover:bg-gray-100 shadow-sm">
                     Reset
                 </button>
-                <button type="submit" class="px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-lg">
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-blue-950 text-white hover:bg-blue-900 shadow-lg">
                     Simpan
                 </button>
             </div>
