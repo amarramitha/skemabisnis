@@ -50,31 +50,6 @@
     </span>
 </a>
 
-<!-- Submenu -->
-<a href="{{ route('masterdata.inputkategori') }}"
-    class="ml-8 flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all duration-300
-    {{ request()->routeIs('masterdata.inputkategori') 
-        ? 'bg-white text-blue-950 font-semibold shadow' 
-        : 'text-white hover:bg-white hover:text-blue-950' }}">
-    <i data-lucide="plus-circle" class="w-4 h-4"></i>
-    <span
-        class="hidden group-hover:inline opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150">
-        Input Kategori Produk
-    </span>
-</a>
-
-<a href="{{ route('masterdata.inputproduk') }}"
-    class="ml-8 flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all duration-300
-    {{ request()->routeIs('masterdata.inputproduk') 
-        ? 'bg-white text-blue-950 font-semibold shadow' 
-        : 'text-white hover:bg-white hover:text-blue-950' }}">
-    <i data-lucide="plus-circle" class="w-4 h-4"></i>
-    <span
-        class="hidden group-hover:inline opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150">
-        Input Produk
-    </span>
-</a>
-
 <a href="{{ route('penawaran.create') }}"
     class="flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300
     {{ request()->routeIs('penawaran.create') 

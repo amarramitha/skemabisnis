@@ -13,27 +13,35 @@
     @endif
 
     {{-- Toolbar Atas --}}
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-3">
-        <div class="flex items-center space-x-2">
-            {{-- Dropdown kategori dari produk yang ada --}}
-            <select id="filterKategori" 
-                class="border rounded-lg px-3 py-2 text-sm focus:ring focus:ring-indigo-300 w-40">
-                <option value="">Semua Kategori</option>
-                @foreach ($produk->pluck('kategori')->filter()->unique('id') as $k)
-                    <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
-                @endforeach
-            </select>
+<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-3">
+    <div class="flex items-center space-x-2">
+        {{-- Dropdown kategori dari produk yang ada --}}
+        <select id="filterKategori" 
+            class="border rounded-lg px-3 py-2 text-sm focus:ring focus:ring-indigo-300 w-40">
+            <option value="">Semua Kategori</option>
+            @foreach ($produk->pluck('kategori')->filter()->unique('id') as $k)
+                <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
+            @endforeach
+        </select>
 
+        <input type="text" id="searchProduk"
+            placeholder="Cari produk..."
+            class="border rounded-lg px-3 py-2 text-sm w-48 focus:ring focus:ring-indigo-300">
 
-            <input type="text" id="searchProduk"
-                placeholder="Cari produk..."
-                class="border rounded-lg px-3 py-2 text-sm w-48 focus:ring focus:ring-indigo-300">
-
-            <button id="btnSearch" class="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm shadow">
-                Cari
-            </button>
-        </div>
+        <button id="btnSearch" class="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm shadow">
+            Cari
+        </button>
     </div>
+
+    {{-- Tombol Tambah Produk --}}
+    <div>
+        <a href="{{ route('masterdata.inputproduk') }}" 
+           class="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm shadow">
+           + Tambah Produk
+        </a>
+    </div>
+</div>
+
 
     {{-- Tabel --}}
     <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
@@ -44,8 +52,6 @@
                     <th class="px-6 py-3 text-left text-sm font-semibold">Kategori</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold">Nama Produk</th>
                     <th class="px-6 py-3 text-right text-sm font-semibold">Harga</th>
-                    <th class="px-6 py-3 text-right text-sm font-semibold">PPN 11%</th>
-                    <th class="px-6 py-3 text-right text-sm font-semibold">Total</th>
                     <th class="px-6 py-3 text-center text-sm font-semibold">Diskon Maks</th>
                     <th class="px-6 py-3 text-center text-sm font-semibold">Jenis</th>
                     <th class="px-6 py-3 text-center text-sm font-semibold">Aksi</th>
@@ -53,20 +59,14 @@
             </thead>
             <tbody id="produkTable" class="divide-y divide-gray-200 text-sm text-gray-700">
                 @foreach ($produk as $index => $p)
-                @php
-                    $ppn = $p->harga * 0.11;
-                    $total = $p->total_harga;
-                @endphp
                 <tr class="hover:bg-gray-50 transition-colors"
                     data-kategori-id="{{ $p->kategori->id ?? '' }}">
                     <td class="px-6 py-3">{{ $index + 1 }}</td>
                     <td class="px-6 py-3">{{ $p->kategori->nama_kategori ?? '-' }}</td>
                     <td class="px-6 py-3">{{ $p->nama_produk }}</td>
                     <td class="px-6 py-3 text-right">Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
-                    <td class="px-6 py-3 text-right">Rp {{ number_format($ppn, 0, ',', '.') }}</td>
-                    <td class="px-6 py-3 text-right">Rp {{ number_format($total, 0, ',', '.') }}</td>
-                    <td class="px-6 py-3 text-center">{{ $p->diskonmaks }}%</td>
-                    <td class="px-6 py-3 text-center">{{ $p->jenis }}</td>
+                    <td class="px-6 py-3 text-center">{{ $p->kategori->diskon_maks }}%</td>
+                    <td class="px-6 py-3 text-center">{{ $p->kategori->jenis }}</td>
 
                     {{-- Aksi --}}
                     <td class="px-6 py-3 flex justify-center space-x-3">

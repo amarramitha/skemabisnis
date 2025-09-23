@@ -15,7 +15,7 @@
             {{-- Pilih Kategori --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                <select name="kategori_id"
+                <select name="kategori_id" id="kategori_id"
                     class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-950 focus:border-blue-950" required>
                     <option value="">-- Pilih Kategori --</option>
                     @foreach ($kategori as $k)
@@ -34,26 +34,22 @@
             {{-- Harga Produk --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Harga Produk</label>
-                <input type="number" name="harga"
+                <input type="number" name="harga" step="0.01"
                     class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-950 focus:border-blue-950" required>
             </div>
 
-            {{-- Diskon Maksimal (%) --}}
+            {{-- Diskon Maksimal (auto dari kategori) --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Diskon Maksimal (%)</label>
-                <input type="number" name="diskonmaks" id="diskonmaks" min="0" max="100"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-950 focus:border-blue-950" required>
+                <input type="text" id="diskon_maks" readonly
+                    class="w-full border-gray-300 rounded-lg bg-gray-100 shadow-sm focus:ring-blue-950 focus:border-blue-950">
             </div>
 
-            {{-- Jenis Produk --}}
+            {{-- Jenis Produk (auto dari kategori) --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Produk</label>
-                <select name="jenis"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-950 focus:border-blue-950" required>
-                    <option value="">-- Pilih Jenis --</option>
-                    <option value="POTS">POTS</option>
-                    <option value="Non POTS">Non POTS</option>
-                </select>
+                <input type="text" id="jenis" readonly
+                    class="w-full border-gray-300 rounded-lg bg-gray-100 shadow-sm focus:ring-blue-950 focus:border-blue-950">
             </div>
 
             {{-- Tombol --}}
@@ -71,34 +67,20 @@
 @endsection
 
 @push('scripts')
-    {{-- Import SweetAlert2 --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const kategoriData = @json($kategori);
 
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: "{{ session('success') }}",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            })
-        </script>
-    @endif
+    document.getElementById('kategori_id').addEventListener('change', function () {
+        const selectedId = this.value;
+        const kategori = kategoriData.find(k => k.id == selectedId);
 
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'error',
-                title: "{{ session('error') }}",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            })
-        </script>
-    @endif
+        if (kategori) {
+            document.getElementById('diskon_maks').value = kategori.diskon_maks + ' %';
+            document.getElementById('jenis').value = kategori.jenis;
+        } else {
+            document.getElementById('diskon_maks').value = '';
+            document.getElementById('jenis').value = '';
+        }
+    });
+</script>
 @endpush

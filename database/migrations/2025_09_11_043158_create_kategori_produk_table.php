@@ -6,21 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('kategori_produk', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kategori');
+            $table->decimal('diskon_maks', 5, 2)->default(0); // persen
+            $table->enum('jenis', ['pots', 'non-pots'])->default('non-pots');
+            $table->integer('psb');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('kategori_produk');

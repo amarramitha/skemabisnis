@@ -52,9 +52,10 @@ public function storeProduk(Request $request)
         'kategori_id' => 'required|exists:kategori_produk,id',
         'nama_produk' => 'required|string|max:255',
         'harga'       => 'required|numeric|min:0',
-        'diskonmaks'  => 'required|integer|min:0|max:100',
-        'jenis'       => 'required|in:POTS,Non POTS',
     ]);
+
+    // ambil kategori yang dipilih
+    $kategori = KategoriProduk::findOrFail($request->kategori_id);
 
     $ppn = $request->harga * 0.11;
     $total = $request->harga + $ppn;
@@ -63,9 +64,10 @@ public function storeProduk(Request $request)
         'kategori_id' => $request->kategori_id,
         'nama_produk' => $request->nama_produk,
         'harga'       => $request->harga,
-        'total_harga' => $total,
-        'diskonmaks'  => $request->diskonmaks,
-        'jenis'       => $request->jenis,
+        // 'total_harga' => $total,
+        // ambil dari kategori, bukan input user
+        'diskonmaks'  => $kategori->diskon_maks,
+        'jenis'       => $kategori->jenis,
     ]);
 
     return redirect()->route('masterdata.inputproduk')
@@ -86,32 +88,33 @@ public function storeProduk(Request $request)
     // UPDATE PRODUK
     // ==============================
     public function updateProduk(Request $request, $id)
-    {
-        $produk = Produk::findOrFail($id);
+{
+    $produk = Produk::findOrFail($id);
 
-        $request->validate([
-            'kategori_id' => 'required|exists:kategori_produk,id',
-            'nama_produk' => 'required|string|max:255',
-            'harga'       => 'required|numeric|min:0',
-            'diskonmaks'  => 'required|integer|min:0|max:100',
-            'jenis'       => 'required|in:POTS,Non POTS',
-        ]);
+    $request->validate([
+        'kategori_id' => 'required|exists:kategori_produk,id',
+        'nama_produk' => 'required|string|max:255',
+        'harga'       => 'required|numeric|min:0',
+    ]);
 
-        $ppn = $request->harga * 0.11;
-        $total = $request->harga + $ppn;
+    $kategori = KategoriProduk::findOrFail($request->kategori_id);
 
-        $produk->update([
-            'kategori_id' => $request->kategori_id,
-            'nama_produk' => $request->nama_produk,
-            'harga'       => $request->harga,
-            'total_harga' => $total,
-            'diskonmaks'  => $request->diskonmaks,
-            'jenis'       => $request->jenis,
-        ]);
+    $ppn = $request->harga * 0.11;
+    $total = $request->harga + $ppn;
 
-        return redirect()->route('masterdata')
-            ->with('success', 'Produk berhasil diperbarui');
-    }
+    $produk->update([
+        'kategori_id' => $request->kategori_id,
+        'nama_produk' => $request->nama_produk,
+        'harga'       => $request->harga,
+        // 'total_harga' => $total,
+        'diskonmaks'  => $kategori->diskon_maks,
+        'jenis'       => $kategori->jenis,
+    ]);
+
+    return redirect()->route('masterdata')
+        ->with('success', 'Produk berhasil diperbarui');
+}
+
 
     // ==============================
     // HAPUS PRODUK
