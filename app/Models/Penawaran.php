@@ -13,7 +13,8 @@ class Penawaran extends Model
         'total_harga',
         'total_diskon',
         'total_akhir',
-        'total_diskon_persen',
+        'ppn',
+        'ppn_nominal',
     ];
 
     /**
