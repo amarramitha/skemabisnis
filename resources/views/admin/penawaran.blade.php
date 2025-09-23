@@ -113,15 +113,15 @@
                     <th colspan="3" class="px-3 py-2 text-center bg-green-700">Harga Penawaran</th>
                 </tr>
                 <tr class="bg-gray-700 text-white text-xs uppercase">
-                    <th class="px-3 py-2 text-right">Satuan</th>
-                    <th class="px-3 py-2 text-right">MC</th>
-                    <th class="px-3 py-2 text-right">Total</th>
-                    <th class="px-3 py-2 text-right">OTC</th>
-                    <th class="px-3 py-2 text-right">MC</th>
-                    <th class="px-3 py-2 text-right">OTC</th>
-                    <th class="px-3 py-2 text-right">Satuan</th>
-                    <th class="px-3 py-2 text-right">MC</th>
-                    <th class="px-3 py-2 text-right">Total</th>
+                    <th class="px-3 py-2 text-center">Satuan</th>
+                    <th class="px-3 py-2 text-center">MC</th>
+                    <th class="px-3 py-2 text-center">Total</th>
+                    <th class="px-3 py-2 text-center">OTC</th>
+                    <th class="px-3 py-2 text-center">MC</th>
+                    <th class="px-3 py-2 text-center">OTC</th>
+                    <th class="px-3 py-2 text-center">Satuan</th>
+                    <th class="px-3 py-2 text-center">MC</th>
+                    <th class="px-3 py-2 text-center">Total</th>
                 </tr>
             </thead>
             <tbody id="tabelRingkasan" class="divide-y divide-gray-200 text-gray-700">
@@ -237,28 +237,29 @@ function hitungTotal() {
 
         // isi baris tabel
         tbody.innerHTML += `
-        <tr class="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition">
-            <td class="px-3 py-2 text-center">${i + 1}</td>
-            <td class="px-3 py-2">${opt.text}</td>
-            <td class="px-3 py-2 text-center">${formatRupiah(satuan)}</td>
-            <td class="px-3 py-2 text-center">${qty}</td>
-            <td class="px-3 py-2 text-center">${bulan}</td>
+            <tr class="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition">
+                <td class="px-3 py-2 text-center">${i + 1}</td>
+                <td class="px-3 py-2">${opt.text}</td>
+                <td class="px-3 py-2 text-center">${formatRupiah(satuan)}</td>
+                <td class="px-3 py-2 text-center">${qty}</td>
+                <td class="px-3 py-2 text-center">${bulan}</td>
 
-            <!-- Tarif Dasar -->
-            <td class="px-3 py-2 text-right">${formatRupiah(satuan)}</td>
-            <td class="px-3 py-2 text-right">${formatRupiah(hargaMc)}</td>
-            <td class="px-3 py-2 text-right">${formatRupiah(total)}</td>
+                <!-- Tarif Dasar -->
+                <td class="px-3 py-2 text-center">${formatRupiah(satuan)}</td>
+                <td class="px-3 py-2 text-center">${formatRupiah(hargaMc)}</td>
+                <td class="px-3 py-2 text-center">${formatRupiah(total)}</td>
 
-            <!-- Diskon -->
-            <td class="px-3 py-2 text-right">${diskonPsb.toFixed(2)}%</td>
-            <td class="px-3 py-2 text-right">${diskon.toFixed(2)}%</td>
-            <td class="px-3 py-2 text-right text-red-600">-${formatRupiah(totalPotongan)}</td>
+                <!-- Diskon -->
+                <td class="px-3 py-2 text-center">${diskonPsb.toFixed(2)}%</td>
+                <td class="px-3 py-2 text-center">${diskon.toFixed(2)}%</td>
+                <td class="px-3 py-2 text-center text-red-600">-${formatRupiah(totalPotongan)}</td>
 
-            <!-- Harga Penawaran -->
-            <td class="px-3 py-2 text-right">${formatRupiah(satuan)}</td>
-            <td class="px-3 py-2 text-right">${formatRupiah(hargaMc)}</td>
-            <td class="px-3 py-2 text-right font-medium text-green-600">${formatRupiah(penawaranTotal)}</td>
-        </tr>`;
+                <!-- Harga Penawaran -->
+                <td class="px-3 py-2 text-center">${formatRupiah(satuan)}</td>
+                <td class="px-3 py-2 text-center">${formatRupiah(hargaMc)}</td>
+                <td class="px-3 py-2 text-center font-medium text-green-600">${formatRupiah(penawaranTotal)}</td>
+            </tr>`;
+
     });
 
     // subtotal
