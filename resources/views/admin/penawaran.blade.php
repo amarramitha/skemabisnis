@@ -21,62 +21,65 @@
 
             {{-- Produk --}}
             <div id="produkWrapper" class="space-y-3">
-                <div class="produkItem grid grid-cols-12 gap-3 items-end">
-                    {{-- Pilih Produk --}}
-                    <div class="col-span-4">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Produk</label>
-                        <select name="produk_id[]" class="produkSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
-                            <option value="">-- Pilih Produk --</option>
-                            @foreach($produk as $p)
-                                <option value="{{ $p->id }}"
-                                    data-harga="{{ $p->harga }}"
-                                    data-diskonmaks="{{ $p->kategori->diskon_maks ?? 0 }}"
-                                    data-psb="{{ $p->kategori->psb ?? 0 }}"
-                                    data-diskonpsb="{{ $p->kategori->diskon_psb ?? 0 }}">
-                                    {{ $p->nama_produk ?? '—' }} 
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+    <div class="produkItem grid grid-cols-12 gap-3 items-end">
+        {{-- Pilih Produk --}}
+        <div class="col-span-4">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Produk</label>
+            <select name="produk_id[]" class="produkSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
+                <option value="">-- Pilih Produk --</option>
+                @foreach($produk as $p)
+                    <option value="{{ $p->id }}"
+                        data-harga="{{ $p->harga }}"
+                        data-diskonmaks="{{ $p->kategori->diskon_maks ?? 0 }}"
+                        data-psb="{{ $p->kategori->psb ?? 0 }}"
+                        data-diskonpsb="{{ $p->kategori->diskon_psb ?? 0 }}">
+                        {{ $p->nama_produk ?? '—' }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-                    {{-- Qty --}}
-                    <div class="col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Qty</label>
-                        <input type="number" name="qty[]" value="1" min="1"
-                               class="qtyInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
-                    </div>
+        {{-- Qty --}}
+        <div class="col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Qty</label>
+            <input type="number" name="qty[]" value="1" min="1"
+                   class="qtyInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
+        </div>
 
-                    {{-- Bulan --}}
-                    <div class="col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Bulan</label>
-                        <input type="number" name="bulan[]" value="1" min="1"
-                               class="bulanInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
-                    </div>
+        {{-- Bulan --}}
+        <div class="col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Bulan</label>
+            <input type="number" name="bulan[]" value="1" min="1"
+                   class="bulanInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
+        </div>
 
-                    {{-- Diskon --}}
-                    <div class="col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Diskon (%)</label>
-                        <input type="number" name="diskon[]" value="0"
-                               class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
-                               readonly>
-                    </div>
+        {{-- Diskon --}}
+        <div class="col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Diskon (%)</label>
+            <input type="number" name="diskon[]" value="0"
+                   data-diskon-maks="{{ $p->kategori->diskon_maks }}"
+                   class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
+                   readonly>
+        </div>
 
-                    {{-- Diskon PSB --}}
-                    <div class="col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1">Diskon PSB (%)</label>
-                        <input type="number" name="diskon_psb[]" value="0"
-                               class="diskonPsbInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
-                               readonly>
-                    </div>
+        {{-- Diskon PSB --}}
+        <div class="col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Diskon PSB (%)</label>
+            <input type="number" name="diskon_psb[]" value="0"
+                   data-diskon-maks="{{ $p->kategori->diskon_psb }}"
+                   class="diskonPsbInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
+        </div>
 
-                    {{-- Tombol hapus --}}
-                    <div class="col-span-2">
-                        <label class="block text-xs font-medium text-gray-600 mb-1 invisible">Aksi</label>
-                        <button type="button" class="hapusProduk w-full bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg shadow">
-                            Hapus
-                        </button>
-                    </div>
-                    <input type="hidden" name="harga_satuan[]" class="hargaSatuanHidden">
+        {{-- Tombol hapus --}}
+        <div class="col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1 invisible">Aksi</label>
+            <button type="button" class="hapusProduk w-full bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg shadow">
+                Hapus
+            </button>
+        </div>
+
+        {{-- Hidden fields --}}
+        <input type="hidden" name="harga_satuan[]" class="hargaSatuanHidden">
         <input type="hidden" name="harga_total[]" class="hargaTotalHidden">
         <input type="hidden" name="diskon_nominal[]" class="diskonNominalHidden">
         <input type="hidden" name="psb[]" class="psbHidden">
@@ -84,23 +87,24 @@
         <input type="hidden" name="harga_setelah_diskon[]" class="hargaSetelahDiskonHidden">
         <input type="hidden" name="ppn_nominal[]" class="ppnNominalHidden">
         <input type="hidden" name="harga_akhir[]" class="hargaAkhirHidden">
-                </div>
-            </div>
+    </div>
+</div>
 
-            <button type="button" id="tambahProduk"
-                    class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
-                + Tambah Produk
-            </button>
+<button type="button" id="tambahProduk"
+        class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
+    + Tambah Produk
+</button>
 
-            {{-- PPN --}}
-            <div class="mt-6">
-                <label class="block text-sm font-medium text-gray-700 mb-1">PPN</label>
-                <select id="ppnSelect" name="ppn"
-                        class="w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
-                    <option value="11">11%</option>
-                    <option value="12">12%</option>
-                </select>
-            </div>
+{{-- PPN --}}
+<div class="mt-6">
+    <label class="block text-sm font-medium text-gray-700 mb-1">PPN</label>
+    <select id="ppnSelect" name="ppn"
+            class="w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
+        <option value="11">11%</option>
+        <option value="12">12%</option>
+    </select>
+</div>
+
 
             {{-- Ringkasan --}}
             <div id="ringkasanBox" class="hidden mt-8">
@@ -131,9 +135,7 @@
                                 <th class="px-3 py-2 text-center">Total</th>
                             </tr>
                         </thead>
-                        <tbody id="tabelRingkasan" class="divide-y divide-gray-200 text-gray-700">
-                            {{-- baris produk masuk via JS --}}
-                        </tbody>
+                        <tbody id="tabelRingkasan" class="divide-y divide-gray-200 text-gray-700"></tbody>
                         <tfoot class="text-sm font-semibold">
                             <tr class="bg-gray-100">
                                 <td colspan="4" class="px-3 py-2 text-right font-medium">Sub Total:</td>
@@ -147,10 +149,10 @@
                                 <td class="px-3 py-2 text-right" id="subtotalPenawaranMc">-</td>
                                 <td class="px-3 py-2 text-right text-green-700" id="subtotalPenawaranTotal">-</td>
                             </tr>
-                            <tr>
-                                <td colspan="12" class="px-3 py-2 text-right">Total Sebelum PPN:</td>
+                            {{-- <tr>
+                                <td colspan="12" class="px-3 py-2 text-right">Total:</td>
                                 <td class="px-3 py-2 text-right" id="totalAwal">-</td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td colspan="12" class="px-3 py-2 text-right">PPN:</td>
                                 <td class="px-3 py-2 text-right" id="ppnNominal">-</td>
@@ -168,15 +170,6 @@
             <input type="hidden" id="totalHarga" name="total_harga">
             <input type="hidden" id="totalPotongan" name="total_potongan">
             <input type="hidden" id="penawaran" name="penawaran">
-            <input type="hidden" name="harga_satuan[]" class="hargaSatuanHidden">
-<input type="hidden" name="harga_total[]" class="hargaTotalHidden">
-<input type="hidden" name="diskon_nominal[]" class="diskonNominalHidden">
-<input type="hidden" name="psb[]" class="psbHidden">
-<input type="hidden" name="psb_setelah_diskon[]" class="psbSetelahDiskonHidden">
-<input type="hidden" name="harga_setelah_diskon[]" class="hargaSetelahDiskonHidden">
-<input type="hidden" name="ppn_nominal[]" class="ppnNominalHidden">
-<input type="hidden" name="harga_akhir[]" class="hargaAkhirHidden">
-
 
             {{-- Tombol Submit --}}
             <div class="flex justify-end mt-6">
@@ -190,236 +183,191 @@
 </div>
 
 <script>
-/* --------------------
-   Helper
--------------------- */
-function formatRupiah(angka) {
-    return angka.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
-}
+function formatRupiah(angka){return angka.toLocaleString('id-ID',{style:'currency',currency:'IDR'});}
 
-/* --------------------
-   Toggle Diskon Fields
--------------------- */
-function toggleDiskonField(select) {
-    const opt = select.options[select.selectedIndex];
-    const diskonMaks = parseInt(opt?.getAttribute("data-diskonmaks")) || 0;
-    const diskonInput = select.closest(".produkItem").querySelector(".diskonInput");
-    if (diskonMaks === 0) {
-        diskonInput.value = 0;
-        diskonInput.readOnly = true;
-        diskonInput.classList.add("bg-gray-100", "text-gray-500");
+function toggleDiskonField(select){
+    const opt=select.options[select.selectedIndex];
+    const diskonMaks=parseInt(opt?.dataset.diskonmaks)||0;
+    const diskonInput=select.closest('.produkItem').querySelector('.diskonInput');
+    if(diskonMaks===0){
+        diskonInput.value=0;
+        diskonInput.readOnly=true;
+        diskonInput.classList.add('bg-gray-100','text-gray-500');
     } else {
-        diskonInput.readOnly = false;
-        diskonInput.classList.remove("bg-gray-100", "text-gray-500");
+        diskonInput.readOnly=false;
+        diskonInput.classList.remove('bg-gray-100','text-gray-500');
     }
 }
 
-function toggleDiskonPsbField(select) {
-    const opt = select.options[select.selectedIndex];
-    const diskonPsbMaks = parseInt(opt?.getAttribute("data-diskonpsb")) || 0;
-    const diskonPsbInput = select.closest(".produkItem").querySelector(".diskonPsbInput");
-    if (diskonPsbMaks === 0) {
-        diskonPsbInput.value = 0;
-        diskonPsbInput.readOnly = true;
-        diskonPsbInput.classList.add("bg-gray-100", "text-gray-500");
-    } else {
-        diskonPsbInput.readOnly = false;
-        diskonPsbInput.classList.remove("bg-gray-100", "text-gray-500");
-    }
+function toggleDiskonPsbField(select){
+    const diskonPsbInput = select.closest('.produkItem').querySelector('.diskonPsbInput');
+    diskonPsbInput.readOnly = false; // selalu bisa diinput
+    diskonPsbInput.classList.remove('bg-gray-100','text-gray-500');
 }
 
-/* --------------------
-   Hitung Total (Revisi)
--------------------- */
 function hitungTotal() {
-    let totalAwal = 0;
-    let totalPotonganAll = 0;
-    let totalSetelahDiskon = 0;
-
-    // subtotal per kolom
-    let subtotalSatuan = 0;
-    let subtotalMc = 0;
-    let subtotalTotal = 0;
-    let subtotalPsb = 0;
-    let subtotalDiskonPsb = 0;
-    let subtotalDiskonLayanan = 0;
-    let subtotalPenawaranSatuan = 0;
-    let subtotalPenawaranMc = 0;
-    let subtotalPenawaranTotal = 0;
+    let totalAwalLayanan = 0; // total tarif layanan sebelum diskon
+    let totalPotonganLayanan = 0; // total potongan layanan
+    let totalAwalPsb = 0; // total PSB sebelum diskon
+    let totalPotonganPsb = 0; // total potongan PSB
+    let totalSetelahDiskon = 0; // total keseluruhan setelah diskon
 
     const tbody = document.getElementById('tabelRingkasan');
     tbody.innerHTML = "";
-
     const produkList = document.querySelectorAll('#produkWrapper .produkItem');
     const ppnPersen = parseInt(document.getElementById('ppnSelect').value) || 0;
     let rowNo = 0;
 
-    produkList.forEach((produk) => {
+    // subtotal untuk ringkasan
+    let subtotalSatuan=0, subtotalMc=0, subtotalTotal=0;
+    let subtotalPenawaranSatuan = 0;
+    let subtotalPenawaranMc = 0;
+    let subtotalPenawaranTotal=0;
+    let subtotalPsb = 0;
+
+    produkList.forEach(produk => {
         const select = produk.querySelector('.produkSelect');
         const opt = select?.selectedOptions?.[0];
-        if (!opt || !select.value) return;
-
+        if(!opt || !select.value) return;
         rowNo++;
+
         const hargaSatuan = parseFloat(opt.dataset.harga) || 0;
         const psb = parseFloat(opt.dataset.psb) || 0;
         const qty = parseInt(produk.querySelector('.qtyInput')?.value || 1);
         const bulan = parseInt(produk.querySelector('.bulanInput')?.value || 1);
-        const diskon = parseFloat(produk.querySelector('.diskonInput')?.value) || 0;
-        const diskonPsb = parseFloat(produk.querySelector('.diskonPsbInput')?.value) || 0;
+        const diskon = parseFloat(produk.querySelector('.diskonInput')?.value || 0);
+        const diskonPsb = parseFloat(produk.querySelector('.diskonPsbInput')?.value || 0);
 
-        // Hitungan dasar
-        const satuan = hargaSatuan;
-        const mc = satuan * qty;
+        const mc = hargaSatuan * qty;
         const tarifTotal = mc * bulan;
-
-        // Diskon
         const potonganLayanan = tarifTotal * (diskon / 100);
-        const potonganPsb = psb * (diskonPsb / 100);
-
-        // Setelah diskon
         const tarifSetelahDiskon = tarifTotal - potonganLayanan;
+
+        const potonganPsb = psb * (diskonPsb / 100);
         const psbSetelahDiskon = psb - potonganPsb;
+
         const subtotal = tarifSetelahDiskon + psbSetelahDiskon;
 
-        // Akumulasi global
-        totalAwal += tarifTotal + psb;
-        totalPotonganAll += potonganLayanan + potonganPsb;
+        totalAwalLayanan += tarifTotal;
+        totalPotonganLayanan += potonganLayanan;
+        totalAwalPsb += psb;
+        totalPotonganPsb += potonganPsb;
         totalSetelahDiskon += subtotal;
 
-        // Akumulasi per kolom
-        subtotalSatuan += satuan;
+        subtotalSatuan += hargaSatuan;
         subtotalMc += mc;
         subtotalTotal += tarifTotal;
         subtotalPsb += psb;
-        subtotalDiskonPsb += potonganPsb;
-        subtotalDiskonLayanan += potonganLayanan;
-        subtotalPenawaranSatuan += satuan;
+        subtotalPenawaranSatuan += hargaSatuan;
         subtotalPenawaranMc += mc;
         subtotalPenawaranTotal += subtotal;
 
-        // Update hidden input per produk
-        produk.querySelector('.hargaSatuanHidden').value = satuan;
+        produk.querySelector('.hargaSatuanHidden').value = hargaSatuan;
         produk.querySelector('.hargaTotalHidden').value = tarifTotal;
-        produk.querySelector('.diskonNominalHidden').value = potonganLayanan + potonganPsb;
+        produk.querySelector('.diskonNominalHidden').value = potonganLayanan;
         produk.querySelector('.psbHidden').value = psb;
         produk.querySelector('.psbSetelahDiskonHidden').value = psbSetelahDiskon;
         produk.querySelector('.hargaSetelahDiskonHidden').value = subtotal;
         produk.querySelector('.ppnNominalHidden').value = subtotal * (ppnPersen / 100);
-        produk.querySelector('.hargaAkhirHidden').value = subtotal + (subtotal * (ppnPersen / 100));
+        produk.querySelector('.hargaAkhirHidden').value = subtotal * (1 + ppnPersen / 100);
 
-        // Tambah ke tabel ringkasan
-        tbody.innerHTML += `
-        <tr class="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition">
+        tbody.innerHTML += `<tr class="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition">
             <td class="px-3 py-2 text-center">${rowNo}</td>
             <td class="px-3 py-2">${opt.text}</td>
             <td class="px-3 py-2 text-center">${qty}</td>
             <td class="px-3 py-2 text-center">${bulan}</td>
-            <td class="px-3 py-2 text-right">${formatRupiah(satuan)}</td>
+            <td class="px-3 py-2 text-right">${formatRupiah(hargaSatuan)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(mc)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(tarifTotal)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(psb)}</td>
             <td class="px-3 py-2 text-center">${diskonPsb.toFixed(2)}%</td>
             <td class="px-3 py-2 text-center text-red-600">${diskon.toFixed(2)}%</td>
-            <td class="px-3 py-2 text-right">${formatRupiah(satuan)}</td>
+            <td class="px-3 py-2 text-right">${formatRupiah(hargaSatuan)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(mc)}</td>
             <td class="px-3 py-2 text-right font-medium text-green-600">${formatRupiah(subtotal)}</td>
         </tr>`;
     });
 
-    // Hitung total diskon layanan (%) dengan weighted average
-    totalDiskonPersen = totalAwal > 0 ? (subtotalDiskonLayanan / subtotalTotal) * 100 : 0;
+    // total diskon layanan (%) = potongan layanan / total layanan
+    const totalDiskonLayananPersen = totalAwalLayanan > 0 
+        ? (totalPotonganLayanan / totalAwalLayanan) * 100 
+        : 0;
 
+    // total diskon PSB (%) = potongan PSB / total PSB
+    const totalDiskonPsbPersen = totalAwalPsb > 0 
+        ? (totalPotonganPsb / totalAwalPsb) * 100 
+        : 0;
 
+    document.getElementById('subtotalDiskonLayanan').innerText = totalDiskonLayananPersen.toFixed(2) + " %";
+    document.getElementById('subtotalDiskonPsb').innerText = totalDiskonPsbPersen.toFixed(2) + " %";
 
-    // Update footer subtotal
     document.getElementById('subtotalSatuan').innerText = formatRupiah(subtotalSatuan);
     document.getElementById('subtotalMc').innerText = formatRupiah(subtotalMc);
     document.getElementById('subtotalTotal').innerText = formatRupiah(subtotalTotal);
     document.getElementById('subtotalPsb').innerText = formatRupiah(subtotalPsb);
-    document.getElementById('subtotalDiskonPsb').innerText = "-" + formatRupiah(subtotalDiskonPsb);
-    document.getElementById('subtotalDiskonLayanan').innerText = totalDiskonPersen.toFixed(2) + " %";
     document.getElementById('subtotalPenawaranSatuan').innerText = formatRupiah(subtotalPenawaranSatuan);
     document.getElementById('subtotalPenawaranMc').innerText = formatRupiah(subtotalPenawaranMc);
     document.getElementById('subtotalPenawaranTotal').innerText = formatRupiah(subtotalPenawaranTotal);
 
-    // Footer total
-    document.getElementById('totalAwal').innerText = formatRupiah(totalAwal);
     const ppnNominal = totalSetelahDiskon * (ppnPersen / 100);
     document.getElementById('ppnNominal').innerText = formatRupiah(ppnNominal);
     document.getElementById('totalAkhir').innerText = formatRupiah(totalSetelahDiskon + ppnNominal);
 
-    // Hidden input global
-    document.getElementById('totalHarga').value = totalAwal;
-    document.getElementById('totalPotongan').value = totalPotonganAll;
+    document.getElementById('totalHarga').value = totalAwalLayanan + totalAwalPsb;
+    document.getElementById('totalPotongan').value = totalPotonganLayanan + totalPotonganPsb;
     document.getElementById('penawaran').value = totalSetelahDiskon + ppnNominal;
 
-    // Tampilkan ringkasan
     document.getElementById('ringkasanBox').classList.remove('hidden');
 }
 
+const produkWrapper=document.getElementById('produkWrapper');
 
-/* --------------------
-   Event Listeners
--------------------- */
-const produkWrapper = document.getElementById('produkWrapper');
-
-// change (select, qty, bulan)
-produkWrapper.addEventListener('change', e => {
-    if(e.target.classList.contains('produkSelect')) {
+produkWrapper.addEventListener('change', e=>{
+    if(e.target.classList.contains('produkSelect')){
         toggleDiskonField(e.target);
         toggleDiskonPsbField(e.target);
     }
     hitungTotal();
 });
 
-// input (diskon, diskonPsb)
 produkWrapper.addEventListener('input', e => {
-    if(e.target.classList.contains('diskonInput') || e.target.classList.contains('diskonPsbInput')) {
-        const max = parseInt(e.target.closest('.produkItem').querySelector('.produkSelect').selectedOptions[0].dataset[e.target.classList.contains('diskonInput') ? 'diskonmaks' : 'diskonpsb']) || 0;
-        let val = parseInt(e.target.value) || 0;
-        e.target.value = Math.min(Math.max(val,0), max);
+    if (e.target.classList.contains('diskonInput') || e.target.classList.contains('diskonPsbInput')) {
+        let val = parseFloat(e.target.value) || 0;
+
+        // ambil max diskon dari attribute
+        let diskonMaks = parseFloat(e.target.dataset.diskonMaks) || 100;
+
+        // nilai input dipaksa antara 0 dan diskonMaks
+        e.target.value = Math.min(Math.max(val, 0), diskonMaks);
     }
     hitungTotal();
 });
 
-// tambah produk
-document.getElementById('tambahProduk').addEventListener('click', () => {
-    const wrapper = document.getElementById('produkWrapper');
-    const clone = wrapper.querySelector('.produkItem').cloneNode(true);
-    clone.querySelectorAll('input[type="hidden"]').forEach(h => h.value = 0);
 
-
-    clone.querySelector('.produkSelect').selectedIndex = 0;
-    clone.querySelector('.qtyInput').value = 1;
-    clone.querySelector('.bulanInput').value = 1;
-    clone.querySelector('.diskonInput').value = 0;
-    clone.querySelector('.diskonInput').readOnly = true;
+document.getElementById('tambahProduk').addEventListener('click', ()=>{
+    const wrapper=document.getElementById('produkWrapper');
+    const clone=wrapper.querySelector('.produkItem').cloneNode(true);
+    clone.querySelectorAll('input[type="hidden"]').forEach(h=>h.value=0);
+    clone.querySelector('.produkSelect').selectedIndex=0;
+    clone.querySelector('.qtyInput').value=1;
+    clone.querySelector('.bulanInput').value=1;
+    clone.querySelector('.diskonInput').value=0;
+    clone.querySelector('.diskonInput').readOnly=true;
     clone.querySelector('.diskonInput').classList.add('bg-gray-100','text-gray-500');
-    clone.querySelector('.diskonPsbInput').value = 0;
-    clone.querySelector('.diskonPsbInput').readOnly = true;
-    clone.querySelector('.diskonPsbInput').classList.add('bg-gray-100','text-gray-500');
-
+    clone.querySelector('.diskonPsbInput').value=0;
+    clone.querySelector('.diskonPsbInput').readOnly=false;
+    clone.querySelector('.diskonPsbInput').classList.remove('bg-gray-100','text-gray-500');
     wrapper.appendChild(clone);
 });
 
-// hapus produk
-produkWrapper.addEventListener('click', e => {
-    if(e.target.classList.contains('hapusProduk')) {
-        e.target.closest('.produkItem')?.remove();
-        hitungTotal();
-    }
-});
-
-// init
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.produkSelect').forEach(s => {
+document.addEventListener('DOMContentLoaded', ()=>{
+    document.querySelectorAll('.produkSelect').forEach(s=>{
         toggleDiskonField(s);
         toggleDiskonPsbField(s);
     });
     hitungTotal();
 });
 
-// PPN change
 document.getElementById('ppnSelect').addEventListener('change', hitungTotal);
 </script>
 @endsection

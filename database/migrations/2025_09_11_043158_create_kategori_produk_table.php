@@ -14,6 +14,7 @@ return new class extends Migration
             $table->decimal('diskon_maks', 5, 2)->default(0); // persen
             $table->enum('jenis', ['pots', 'non-pots'])->default('non-pots');
             $table->integer('psb');
+            $table->decimal('diskonmaks_psb')->default(0);
             $table->timestamps();
         });
     }
