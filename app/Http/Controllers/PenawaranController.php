@@ -113,4 +113,5 @@ class PenawaranController extends Controller
 
         return redirect()->route('penawaran.create')->with('success', 'Penawaran berhasil disimpan!');
     }
+
 }

@@ -56,7 +56,7 @@
         {{-- Diskon --}}
         <div class="col-span-2">
             <label class="block text-xs font-medium text-gray-600 mb-1">Diskon (%)</label>
-            <input type="number" name="diskon[]" value="0"
+            <input type="number" name="diskon[]" value="0" 
                    data-diskon-maks="{{ $p->kategori->diskon_maks }}"
                    class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
                    readonly>
@@ -65,7 +65,7 @@
         {{-- Diskon PSB --}}
         <div class="col-span-2">
             <label class="block text-xs font-medium text-gray-600 mb-1">Diskon PSB (%)</label>
-            <input type="number" name="diskon_psb[]" value="0"
+            <input type="number" name="diskon_psb[]" value="0" 
                    data-diskon-maks="{{ $p->kategori->diskon_psb }}"
                    class="diskonPsbInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
         </div>
@@ -367,6 +367,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
     hitungTotal();
 });
+
+// Event delegation untuk tombol hapus produk
+produkWrapper.addEventListener('click', e => {
+    if (e.target.classList.contains('hapusProduk')) {
+        const produkItem = e.target.closest('.produkItem');
+        
+        // Jangan hapus kalau hanya ada 1 produk
+        if (document.querySelectorAll('#produkWrapper .produkItem').length > 1) {
+            produkItem.remove();
+            hitungTotal();
+        } else {
+            alert("Minimal harus ada 1 produk.");
+        }
+    }
+});
+
 
 document.getElementById('ppnSelect').addEventListener('change', hitungTotal);
 </script>
