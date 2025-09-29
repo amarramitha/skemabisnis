@@ -56,19 +56,20 @@
         {{-- Diskon --}}
         <div class="col-span-2">
             <label class="block text-xs font-medium text-gray-600 mb-1">Diskon (%)</label>
-            <input type="number" name="diskon[]" value="0" 
-                   data-diskon-maks="{{ $p->kategori->diskon_maks }}"
-                   class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
-                   readonly>
+            <input type="number" name="diskon[]" value="0" step="0.01" lang="en"
+                data-diskon-maks="{{ $p->kategori->diskon_maks }}"
+                class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
+                readonly>
         </div>
 
         {{-- Diskon PSB --}}
         <div class="col-span-2">
             <label class="block text-xs font-medium text-gray-600 mb-1">Diskon PSB (%)</label>
-            <input type="number" name="diskon_psb[]" value="0" 
-                   data-diskon-maks="{{ $p->kategori->diskon_psb }}"
-                   class="diskonPsbInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
+            <input type="number" name="diskon_psb[]" value="0" step="0.01" lang="en"
+                data-diskon-maks="{{ $p->kategori->diskon_psb }}"
+                class="diskonPsbInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
         </div>
+
 
         {{-- Tombol hapus --}}
         <div class="col-span-2">
@@ -204,6 +205,14 @@ function toggleDiskonPsbField(select){
     diskonPsbInput.readOnly = false; // selalu bisa diinput
     diskonPsbInput.classList.remove('bg-gray-100','text-gray-500');
 }
+
+// Biar koma otomatis jadi titik di input diskon & diskon psb
+document.addEventListener('input', e => {
+    if (e.target.classList.contains('diskonInput') || e.target.classList.contains('diskonPsbInput')) {
+        e.target.value = e.target.value.replace(',', '.'); 
+    }
+});
+
 
 function hitungTotal() {
     let totalAwalLayanan = 0; // total tarif layanan sebelum diskon
