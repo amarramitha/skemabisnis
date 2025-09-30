@@ -32,11 +32,11 @@ return new class extends Migration
             $table->decimal('harga_satuan', 15, 2)->default(0);
             $table->decimal('mc', 15, 2)->default(0);                 // harga_satuan × qty
             $table->decimal('harga_total', 15, 2)->default(0);        // mc × bulan
-            $table->unsignedTinyInteger('diskon')->default(0);        // % diskon layanan
+            $table->decimal('diskon')->default(0);        // % diskon layanan
             $table->decimal('diskon_nominal', 15, 2)->default(0);    // potongan nominal layanan
 
             $table->decimal('psb', 15, 2)->default(0);               // biaya PSB asli
-            $table->unsignedTinyInteger('diskon_psb')->default(0);   // % diskon PSB
+            $table->decimal('diskon_psb')->default(0);   // % diskon PSB
             $table->decimal('psb_setelah_diskon', 15, 2)->default(0);
 
             $table->decimal('harga_setelah_diskon', 15, 2)->default(0); // harga_total - diskon_nominal

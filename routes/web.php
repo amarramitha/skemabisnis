@@ -39,6 +39,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     // Riwayat Penawaran
     Route::get('/riwayat', [PenawaranController::class, 'index'])->name('penawaran.riwayat');
+    
+
 });
 
 /* ----------------- PROFILE ----------------- */

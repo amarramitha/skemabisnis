@@ -88,6 +88,7 @@
         <input type="hidden" name="harga_setelah_diskon[]" class="hargaSetelahDiskonHidden">
         <input type="hidden" name="ppn_nominal[]" class="ppnNominalHidden">
         <input type="hidden" name="harga_akhir[]" class="hargaAkhirHidden">
+        <input type="hidden" name="diskon_psb[]" class="diskonPsbHidden">
     </div>
 </div>
 
@@ -279,6 +280,7 @@ function hitungTotal() {
         produk.querySelector('.hargaSetelahDiskonHidden').value = subtotal;
         produk.querySelector('.ppnNominalHidden').value = subtotal * (ppnPersen / 100);
         produk.querySelector('.hargaAkhirHidden').value = subtotal * (1 + ppnPersen / 100);
+        produk.querySelector('.diskonPsbHidden').value = diskonPsb;
 
         tbody.innerHTML += `<tr class="odd:bg-white even:bg-gray-50 hover:bg-blue-50 transition">
             <td class="px-3 py-2 text-center">${rowNo}</td>

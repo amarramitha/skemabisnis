@@ -70,6 +70,8 @@
                         <button @click="open = true" class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                             Detail
                         </button>
+
+                        
                     </div>
 
                     <div x-show="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -133,7 +135,7 @@
                                             <td class="px-3 py-2 text-right text-green-700">{{ number_format($itemsArray->sum('subtotal'),0,',','.') }}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="12" class="px-3 py-2 text-right">Total Sebelum PPN:</td>
+                                            <td colspan="12" class="px-3 py-2 text-right">Total:</td>
                                             <td class="px-3 py-2 text-right">{{ number_format($totalTarif + $totalPsb - $totalDiskonNominal,0,',','.') }}</td>
                                         </tr>
                                         <tr>
@@ -152,6 +154,7 @@
                                 <button @click="open = false" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
                                     Tutup
                                 </button>
+                                
                             </div>
                         </div>
                     </div>
