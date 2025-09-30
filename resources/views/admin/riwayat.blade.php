@@ -65,13 +65,25 @@
                 @endphp
 
                 <div x-data="{ open: false }" class="p-4 border rounded-lg shadow-sm">
-                    <div class="flex justify-between items-center">
+                    <div class="flex items-center">
                         <span class="font-semibold">{{ $p->nama }}</span>
-                        <button @click="open = true" class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                            Detail
-                        </button>
 
-                        
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <button @click="open = true" 
+                                class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                Detail
+                            </button>
+
+                            <form action="{{ route('penawaran.destroy', $p->id) }}" method="POST" 
+                                onsubmit="return confirm('Yakin ingin menghapus data ini?');" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                    class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                    Hapus
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                     <div x-show="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
