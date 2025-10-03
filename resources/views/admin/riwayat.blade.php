@@ -99,8 +99,9 @@
                                             <th rowspan="2" class="px-3 py-3 text-center">Jumlah</th>
                                             <th rowspan="2" class="px-3 py-3 text-center">Durasi (Bulan)</th>
                                             <th colspan="3" class="px-3 py-2 text-center bg-blue-700">Tarif Dasar</th>
-                                            <th colspan="2" class="px-3 py-3 text-center">PSB</th>
                                             <th rowspan="2" class="px-3 py-2 text-center bg-red-600">Diskon</th>
+                                            <th colspan="2" class="px-3 py-3 text-center">PSB</th>
+                                            
                                             <th colspan="3" class="px-3 py-2 text-center bg-green-700">Harga Penawaran</th>
                                         </tr>
                                         <tr class="bg-gray-700 text-white text-xs uppercase">
@@ -124,9 +125,10 @@
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['hargaSatuan'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['mc'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['total'],0,',','.') }}</td>
+                                                <td class="px-3 py-2 text-center text-red-600">{{ number_format($item['diskonPersen'],2) }}%</td>
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['psb'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-center">{{ number_format($item['diskonPsbPersen'],2) }}%</td>
-                                                <td class="px-3 py-2 text-center text-red-600">{{ number_format($item['diskonPersen'],2) }}%</td>
+                                                
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['hargaSatuan'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['mc'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-right font-medium text-green-600">{{ number_format($item['subtotal'],0,',','.') }}</td>
@@ -139,9 +141,10 @@
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('hargaSatuan'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('mc'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('total'),0,',','.') }}</td>
+                                            <td class="px-3 py-2 text-center text-red-600">{{ number_format($totalPotonganLayanan > 0 ? ($totalPotonganLayanan / $totalTarif * 100) : 0,2) }}%</td>
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('psb'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-center">{{ number_format($totalPotonganPsb > 0 ? ($totalPotonganPsb / $totalPsb * 100) : 0,2) }}%</td>
-                                            <td class="px-3 py-2 text-center text-red-600">{{ number_format($totalPotonganLayanan > 0 ? ($totalPotonganLayanan / $totalTarif * 100) : 0,2) }}%</td>
+                                            
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('hargaSatuan'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('mc'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-right text-green-700">{{ number_format($itemsArray->sum('subtotal'),0,',','.') }}</td>

@@ -6,7 +6,9 @@
 <div class="container mx-auto px-6 py-6">
 
     {{-- Header --}}
-    <h1 class="text-2xl font-bold mb-6">Selamat Datang, Admin 👋</h1>
+    <h1 class="text-2xl font-bold mb-6">
+        Selamat Datang, {{ Auth::user()->name }} 👋
+    </h1>
 
     {{-- Statistik Ringkas --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">

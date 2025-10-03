@@ -122,8 +122,8 @@
                                 <th rowspan="2" class="px-3 py-3 text-center">Jumlah</th>
                                 <th rowspan="2" class="px-3 py-3 text-center">Durasi (Bulan)</th>
                                 <th colspan="3" class="px-3 py-2 text-center bg-blue-700">Tarif Dasar</th>
-                                <th colspan="2" class="px-3 py-3 text-center">PSB</th>
                                 <th rowspan="2" class="px-3 py-2 text-center bg-red-600">Diskon</th>
+                                <th colspan="2" class="px-3 py-3 text-center">PSB</th>
                                 <th colspan="3" class="px-3 py-2 text-center bg-green-700">Harga Penawaran</th>
                             </tr>
                             <tr class="bg-gray-700 text-white text-xs uppercase">
@@ -144,9 +144,10 @@
                                 <td class="px-3 py-2 text-right" id="subtotalSatuan">-</td>
                                 <td class="px-3 py-2 text-right" id="subtotalMc">-</td>
                                 <td class="px-3 py-2 text-right" id="subtotalTotal">-</td>
+                                <td class="px-3 py-2 text-center text-red-600" id="subtotalDiskonLayanan">-</td>
                                 <td class="px-3 py-2 text-right" id="subtotalPsb">-</td>
                                 <td class="px-3 py-2 text-center" id="subtotalDiskonPsb">-</td>
-                                <td class="px-3 py-2 text-center text-red-600" id="subtotalDiskonLayanan">-</td>
+                                
                                 <td class="px-3 py-2 text-right" id="subtotalPenawaranSatuan">-</td>
                                 <td class="px-3 py-2 text-right" id="subtotalPenawaranMc">-</td>
                                 <td class="px-3 py-2 text-right text-green-700" id="subtotalPenawaranTotal">-</td>
@@ -290,9 +291,10 @@ function hitungTotal() {
             <td class="px-3 py-2 text-right">${formatRupiah(hargaSatuan)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(mc)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(tarifTotal)}</td>
+            <td class="px-3 py-2 text-center text-red-600">${diskon.toFixed(2)}%</td>
             <td class="px-3 py-2 text-right">${formatRupiah(psb)}</td>
             <td class="px-3 py-2 text-center">${diskonPsb.toFixed(2)}%</td>
-            <td class="px-3 py-2 text-center text-red-600">${diskon.toFixed(2)}%</td>
+            
             <td class="px-3 py-2 text-right">${formatRupiah(hargaSatuan)}</td>
             <td class="px-3 py-2 text-right">${formatRupiah(mc)}</td>
             <td class="px-3 py-2 text-right font-medium text-green-600">${formatRupiah(subtotal)}</td>
