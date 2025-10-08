@@ -25,6 +25,8 @@
 
                         $potonganLayanan = $total * ($diskonPersen/100);
                         $potonganPsb = $psb * ($diskonPsbPersen/100);
+                        $hargaSatuanSetelahDiskon = $hargaSatuan * (1 - $diskonPersen / 100);
+                        $mcSetelahDiskon = $hargaSatuanSetelahDiskon * $qty;
 
                         $subtotal = ($total - $potonganLayanan) + ($psb - $potonganPsb);
 
@@ -40,6 +42,8 @@
                             'diskonPsbPersen' => $diskonPsbPersen,
                             'potonganLayanan' => $potonganLayanan,
                             'potonganPsb' => $potonganPsb,
+                            'hargaSatuanPenawaran' => $hargaSatuanSetelahDiskon,
+                            'mcPenawaran' => $mcSetelahDiskon,
                             'subtotal' => $subtotal
                         ];
                     });
@@ -129,8 +133,8 @@
                                                 <td class="px-3 py-2 text-right">{{ number_format($item['psb'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-center">{{ number_format($item['diskonPsbPersen'],2) }}%</td>
                                                 
-                                                <td class="px-3 py-2 text-right">{{ number_format($item['hargaSatuan'],0,',','.') }}</td>
-                                                <td class="px-3 py-2 text-right">{{ number_format($item['mc'],0,',','.') }}</td>
+                                                <td class="px-3 py-2 text-right text-green-600">{{ number_format($item['hargaSatuanPenawaran'],0,',','.') }}</td>
+                                                <td class="px-3 py-2 text-right">{{ number_format($item['mcPenawaran'],0,',','.') }}</td>
                                                 <td class="px-3 py-2 text-right font-medium text-green-600">{{ number_format($item['subtotal'],0,',','.') }}</td>
                                             </tr>
                                         @endforeach
@@ -145,8 +149,8 @@
                                             <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('psb'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-center">{{ number_format($totalPotonganPsb > 0 ? ($totalPotonganPsb / $totalPsb * 100) : 0,2) }}%</td>
                                             
-                                            <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('hargaSatuan'),0,',','.') }}</td>
-                                            <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('mc'),0,',','.') }}</td>
+                                            <td class="px-3 py-2 text-right text-green-600">{{ number_format($itemsArray->sum('hargaSatuanPenawaran'),0,',','.') }}</td>
+                                            <td class="px-3 py-2 text-right">{{ number_format($itemsArray->sum('mcPenawaran'),0,',','.') }}</td>
                                             <td class="px-3 py-2 text-right text-green-700">{{ number_format($itemsArray->sum('subtotal'),0,',','.') }}</td>
                                         </tr>
                                         <tr>

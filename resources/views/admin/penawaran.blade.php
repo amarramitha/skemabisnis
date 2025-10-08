@@ -16,55 +16,59 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Konsumen</label>
                 <input type="text" name="nama" placeholder="Masukkan nama konsumen"
-                       class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" required>
+                       class=" border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 w-full" required>
             </div>
 
             {{-- Produk --}}
             <div id="produkWrapper" class="space-y-3">
-    <div class="produkItem grid grid-cols-12 gap-3 items-end">
-        {{-- Pilih Produk --}}
-        <div class="col-span-4">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Produk</label>
-            <select name="produk_id[]" class="produkSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
-                <option value="">-- Pilih Produk --</option>
-                @foreach($produk as $p)
-                    <option value="{{ $p->id }}"
-                        data-harga="{{ $p->harga }}"
-                        data-diskonmaks="{{ $p->kategori->diskon_maks ?? 0 }}"
-                        data-psb="{{ $p->kategori->psb ?? 0 }}"
-                        data-diskonpsb="{{ $p->kategori->diskon_psb ?? 0 }}">
-                        {{ $p->nama_produk ?? '—' }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+            <div class="produkItem grid grid-cols-12 gap-3 items-end">
+                {{-- Pilih Produk --}}
+                <div class="col-span-4">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Produk</label>
+                    <select name="produk_id[]" class="produkSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
+                        <option value="">-- Pilih Produk --</option>
+                        @foreach($produk as $p)
+                            <option value="{{ $p->id }}"
+                                data-harga="{{ $p->harga }}"
+                                data-diskonmaks="{{ $p->kategori->diskon_maks ?? 0 }}"
+                                data-psb="{{ $p->kategori->psb ?? 0 }}"
+                                data-diskonpsb="{{ $p->kategori->diskon_psb ?? 0 }}">
+                                {{ $p->nama_produk ?? '—' }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
         {{-- Qty --}}
-        <div class="col-span-2">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Qty</label>
+        <div class="col-span-1">
+            <label class="block text-xs font-medium text-gray-600 mb-1 text-center">Qty</label>
             <input type="number" name="qty[]" value="1" min="1"
                    class="qtyInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
         </div>
 
         {{-- Bulan --}}
-        <div class="col-span-2">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Bulan</label>
+        <div class="col-span-1">
+            <label class="block text-xs font-medium text-gray-600 mb-1 text-center">Bulan</label>
             <input type="number" name="bulan[]" value="1" min="1"
                    class="bulanInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
         </div>
 
         {{-- Diskon --}}
-        <div class="col-span-2">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Diskon (%)</label>
-            <input type="number" name="diskon[]" value="0" step="0.01" lang="en"
-                data-diskon-maks="{{ $p->kategori->diskon_maks }}"
-                class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
-                readonly>
-        </div>
+            <div class="col-span-2 relative">
+                <label class="block text-xs font-medium text-gray-600 mb-1 text-center">Diskon (%)</label>
+                <input type="number" name="diskon[]" value="0" step="0.01" lang="en"
+                    data-diskon-maks="{{ $p->kategori->diskon_maks }}"
+                    class="diskonInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center bg-gray-100 text-gray-500"
+                    readonly>
+                <p class="diskonMessage text-red-600 text-xs absolute left-0 top-full mt-1 opacity-0 transition-opacity duration-300">
+                    Diskon maksimal 0%
+                </p>
+            </div>
+
 
         {{-- Diskon PSB --}}
         <div class="col-span-2">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Diskon PSB (%)</label>
+            <label class="block text-xs font-medium text-gray-600 mb-1 text-center">Diskon PSB (%)</label>
             <input type="number" name="diskon_psb[]" value="0" step="0.01" lang="en"
                 data-diskon-maks="{{ $p->kategori->diskon_psb }}"
                 class="diskonPsbInput w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-center">
@@ -74,9 +78,9 @@
         {{-- Tombol hapus --}}
         <div class="col-span-2">
             <label class="block text-xs font-medium text-gray-600 mb-1 invisible">Aksi</label>
-            <button type="button" class="hapusProduk w-full bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg shadow">
-                Hapus
-            </button>
+            <button type="button" class="text-red-600 hover:text-red-800" title="Hapus">
+                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            </button>
         </div>
 
         {{-- Hidden fields --}}
@@ -93,7 +97,7 @@
 </div>
 
 <button type="button" id="tambahProduk"
-        class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
+        class="mt-3 bg-blue-900 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-lg shadow">
     + Tambah Produk
 </button>
 
@@ -148,7 +152,7 @@
                                 <td class="px-3 py-2 text-right" id="subtotalPsb">-</td>
                                 <td class="px-3 py-2 text-center" id="subtotalDiskonPsb">-</td>
                                 
-                                <td class="px-3 py-2 text-right" id="subtotalPenawaranSatuan">-</td>
+                                <td class="px-3 py-2 text-right text-green-700" id="subtotalPenawaranSatuan">-</td>
                                 <td class="px-3 py-2 text-right" id="subtotalPenawaranMc">-</td>
                                 <td class="px-3 py-2 text-right text-green-700" id="subtotalPenawaranTotal">-</td>
                             </tr>
@@ -188,19 +192,53 @@
 <script>
 function formatRupiah(angka){return angka.toLocaleString('id-ID',{style:'currency',currency:'IDR'});}
 
-function toggleDiskonField(select){
-    const opt=select.options[select.selectedIndex];
-    const diskonMaks=parseInt(opt?.dataset.diskonmaks)||0;
-    const diskonInput=select.closest('.produkItem').querySelector('.diskonInput');
-    if(diskonMaks===0){
-        diskonInput.value=0;
-        diskonInput.readOnly=true;
+function toggleDiskonField(select) {
+    const opt = select.options[select.selectedIndex];
+    const diskonMaks = parseFloat(opt?.dataset.diskonmaks) || 0;
+    const produkItem = select.closest('.produkItem');
+    const diskonInput = produkItem.querySelector('.diskonInput');
+    const diskonMessage = produkItem.querySelector('.diskonMessage');
+
+    diskonInput.dataset.diskonMaks = diskonMaks;
+
+    if (diskonMaks === 0) {
+        diskonInput.value = 0;
+        diskonInput.readOnly = true;
         diskonInput.classList.add('bg-gray-100','text-gray-500');
+
+        diskonMessage.classList.add('opacity-0');
     } else {
-        diskonInput.readOnly=false;
+        diskonInput.readOnly = false;
         diskonInput.classList.remove('bg-gray-100','text-gray-500');
+
+        diskonMessage.classList.add('opacity-0');
+
+        diskonInput.oninput = null;
+
+        diskonInput.addEventListener('input', function() {
+            let value = parseFloat(this.value) || 0;
+
+            if (value > 30) {
+                diskonMessage.textContent = `Diskon maksimal ${diskonMaks}%`;
+
+                // munculkan pesan
+                diskonMessage.classList.remove('opacity-0');
+                diskonMessage.classList.add('opacity-100');
+
+                // kembalikan ke diskon maksimal
+                this.value = diskonMaks;
+
+                // sembunyikan pesan otomatis setelah 1.5 detik
+                setTimeout(() => {
+                    diskonMessage.classList.remove('opacity-100');
+                    diskonMessage.classList.add('opacity-0');
+                }, 1500);
+            }
+        });
     }
 }
+
+
 
 function toggleDiskonPsbField(select){
     const diskonPsbInput = select.closest('.produkItem').querySelector('.diskonPsbInput');
@@ -253,6 +291,9 @@ function hitungTotal() {
         const tarifTotal = mc * bulan;
         const potonganLayanan = tarifTotal * (diskon / 100);
         const tarifSetelahDiskon = tarifTotal - potonganLayanan;
+        const hargaSatuanSetelahDiskon = hargaSatuan * (1 - diskon / 100);
+        const mcSetelahDiskon = hargaSatuanSetelahDiskon * qty;
+
 
         const potonganPsb = psb * (diskonPsb / 100);
         const psbSetelahDiskon = psb - potonganPsb;
@@ -269,8 +310,8 @@ function hitungTotal() {
         subtotalMc += mc;
         subtotalTotal += tarifTotal;
         subtotalPsb += psb;
-        subtotalPenawaranSatuan += hargaSatuan;
-        subtotalPenawaranMc += mc;
+        subtotalPenawaranSatuan += hargaSatuanSetelahDiskon;
+        subtotalPenawaranMc += mcSetelahDiskon;
         subtotalPenawaranTotal += subtotal;
 
         produk.querySelector('.hargaSatuanHidden').value = hargaSatuan;
@@ -295,8 +336,8 @@ function hitungTotal() {
             <td class="px-3 py-2 text-right">${formatRupiah(psb)}</td>
             <td class="px-3 py-2 text-center">${diskonPsb.toFixed(2)}%</td>
             
-            <td class="px-3 py-2 text-right">${formatRupiah(hargaSatuan)}</td>
-            <td class="px-3 py-2 text-right">${formatRupiah(mc)}</td>
+            <td class="px-3 py-2 text-right text-green-700">${formatRupiah(hargaSatuanSetelahDiskon)}</td>
+            <td class="px-3 py-2 text-right">${formatRupiah(mcSetelahDiskon)}</td>
             <td class="px-3 py-2 text-right font-medium text-green-600">${formatRupiah(subtotal)}</td>
         </tr>`;
     });

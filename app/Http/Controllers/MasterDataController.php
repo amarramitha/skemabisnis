@@ -37,7 +37,14 @@ class MasterDataController extends Controller
 
     public function indexProduk()
 {
-    $produk = Produk::with('kategori')->get();
+    $produk = Produk::with('kategori')
+    ->join('kategori_produk', 'kategori_produk.id', '=', 'produk.kategori_id')
+    ->orderBy('kategori_produk.nama_kategori', 'asc')
+    ->orderByRaw('CAST(SUBSTRING_INDEX(nama_produk, " ", 1) AS UNSIGNED) ASC')
+    ->select('produk.*')
+    ->get();
+
+
     return view('admin.masterdata', compact('produk'));
 }
     public function createProduk()
