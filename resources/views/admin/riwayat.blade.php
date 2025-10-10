@@ -168,13 +168,18 @@
                                     </tfoot>
                                 </table>
                             </div>
-
-                            <div class="flex justify-end mt-4">
-                                <button @click="open = false" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
-                                    Tutup
-                                </button>
-                                
-                            </div>
+                            <div class="flex justify-end mt-4 space-x-3">
+                            <!-- Tombol Print -->
+                            <button onclick="printPenawaran('{{ $p->id }}', '{{ $p->nama }}')" 
+                                class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 flex items-center">
+                                <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print
+                            </button>
+                            <!-- Tombol Tutup -->
+                            <button @click="open = false" 
+                                class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                                Tutup
+                            </button>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -182,4 +187,72 @@
         </div>
     </div>
 </div>
+
+<script>
+function printPenawaran(id, namaKonsumen) {
+    const button = event.target.closest('button');
+    const modal = button.closest('.fixed');
+    if (!modal) return;
+
+    const tableContent = modal.querySelector('table').outerHTML;
+
+    const printWindow = window.open('', '_blank', 'width=1000,height=800');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Penawaran - ${namaKonsumen}</title>
+            <style>
+                body { 
+                    font-family: Arial, sans-serif; 
+                    padding: 20px; 
+                    color: #111827;
+                }
+                h1 { 
+                    color: #1e3a8a; 
+                    text-align: center; 
+                    margin-bottom: 5px;
+                }
+                h3 {
+                    text-align: center;
+                    color: #374151;
+                    margin-top: 0;
+                    font-weight: normal;
+                }
+                table { 
+                    width: 100%; 
+                    border-collapse: collapse; 
+                    margin-top: 20px;
+                }
+                th, td { 
+                    border: 1px solid #999; 
+                    padding: 8px; 
+                    text-align: right; 
+                    font-size: 12px;
+                }
+                th { 
+                    background-color: #e5e7eb; 
+                    color: #111827; 
+                    text-align: center;
+                }
+                td:nth-child(2) { 
+                    text-align: left; 
+                }
+                tfoot td { 
+                    font-weight: bold; 
+                    background-color: #f3f4f6;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>${namaKonsumen}</h1>
+            <h3>Detail Penawaran</h3>
+            ${tableContent}
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.onload = () => printWindow.print();
+}
+</script>
+
 @endsection

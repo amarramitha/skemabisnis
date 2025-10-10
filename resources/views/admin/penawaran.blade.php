@@ -78,10 +78,13 @@
         {{-- Tombol hapus --}}
         <div class="col-span-2">
             <label class="block text-xs font-medium text-gray-600 mb-1 invisible">Aksi</label>
-            <button type="button" class="text-red-600 hover:text-red-800" title="Hapus">
-                                <i data-lucide="trash-2" class="w-5 h-5"></i>
-                            </button>
+            <button type="button"
+                    class="hapusProduk w-full text-red-600 hover:text-red-800 flex items-center justify-center"
+                    title="Hapus" aria-label="Hapus produk">
+                <i data-lucide="trash-2" class="w-5 h-5 pointer-events-none"></i>
+            </button>
         </div>
+
 
         {{-- Hidden fields --}}
         <input type="hidden" name="harga_satuan[]" class="hargaSatuanHidden">
