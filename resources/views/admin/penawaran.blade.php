@@ -15,29 +15,51 @@
             {{-- Nama Konsumen --}}
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Konsumen</label>
-                <input type="text" name="nama" placeholder="Masukkan nama konsumen"
+                <input type="text" name="nama" 
                        class=" border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 w-full" required>
             </div>
 
             {{-- Produk --}}
             <div id="produkWrapper" class="space-y-3">
             <div class="produkItem grid grid-cols-12 gap-3 items-end">
-                {{-- Pilih Produk --}}
-                <div class="col-span-4">
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Produk</label>
-                    <select name="produk_id[]" class="produkSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
-                        <option value="">-- Pilih Produk --</option>
-                        @foreach($produk as $p)
-                            <option value="{{ $p->id }}"
-                                data-harga="{{ $p->harga }}"
-                                data-diskonmaks="{{ $p->kategori->diskon_maks ?? 0 }}"
-                                data-psb="{{ $p->kategori->psb ?? 0 }}"
-                                data-diskonpsb="{{ $p->kategori->diskon_psb ?? 0 }}">
-                                {{ $p->nama_produk ?? '—' }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                {{-- Pilih Kategori --}}
+            {{-- Pilih Kategori --}}
+            <div class="col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Kategori</label>
+            <select name="kategori_id[]" class="kategoriSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
+                <option value="">-- Pilih Kategori --</option>
+                @foreach(($kategori instanceof \Illuminate\Support\Collection ? $kategori->sortBy('nama_kategori') : $kategori) as $k)
+                <option
+                    value="{{ $k->id }}"
+                    data-nama="{{ $k->nama_kategori }}"
+                    data-diskonmaks="{{ $k->diskon_maks ?? 0 }}"
+                    data-psb="{{ $k->psb ?? 0 }}"
+                    data-diskonpsb="{{ $k->diskon_psb ?? 0 }}"
+                >
+                    {{ $k->nama_kategori }}
+                </option>
+                @endforeach
+            </select>
+            </div>
+
+
+            {{-- Pilih Produk --}}
+            <div class="col-span-3">
+                <label class="block text-xs font-medium text-gray-600 mb-1">Produk</label>
+                <select name="produk_id[]" class="produkSelect w-full border-gray-300 rounded-lg shadow-sm px-3 py-2">
+                    <option value="">-- Pilih Produk --</option>
+                    @foreach($produk as $p)
+                        <option value="{{ $p->id }}" 
+                            data-kategori="{{ $p->kategori_id }}"
+                            data-harga="{{ $p->harga }}"
+                            data-diskonmaks="{{ $p->kategori->diskon_maks ?? 0 }}"
+                            data-psb="{{ $p->kategori->psb ?? 0 }}"
+                            data-diskonpsb="{{ $p->kategori->diskon_psb ?? 0 }}">
+                            {{ $p->nama_produk }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
         {{-- Qty --}}
         <div class="col-span-1">
@@ -76,10 +98,10 @@
 
 
         {{-- Tombol hapus --}}
-        <div class="col-span-2">
+        <div class="col-span-1">
             <label class="block text-xs font-medium text-gray-600 mb-1 invisible">Aksi</label>
             <button type="button"
-                    class="hapusProduk w-full text-red-600 hover:text-red-800 flex items-center justify-center"
+                    class="hapusProduk w-full text-red-600 hover:text-red-800 flex mb-3"
                     title="Hapus" aria-label="Hapus produk">
                 <i data-lucide="trash-2" class="w-5 h-5 pointer-events-none"></i>
             </button>
@@ -256,6 +278,81 @@ document.addEventListener('input', e => {
     }
 });
 
+function extractMbps(name) {
+    const m = /\((\d+)\s*Mbps\)/i.exec(name || '');
+    return m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER;
+}
+
+function parseKeys(name) {
+    const clean = (name || '').replace(/\s+/g,' ').trim();
+
+    // teks sebelum "(... Mbps)" dan buang trailing " - "
+    const prefix = clean.split('(')[0].replace(/\s*-\s*$/,'').trim(); // contoh: "ASTINET 1:1"
+
+    // base brand (contoh: "ASTINET")
+    const base = prefix.replace(/\s*\d+\s*[:x]\s*\d+\s*$/,'').trim();
+
+    // ratio 1:1 / 1:2 / 1:4 (toleran: "1 : 1", "1x1")
+    const r = /(\d+)\s*[:x]\s*(\d+)/i.exec(prefix);
+    const rNum = r ? parseInt(r[1], 10) : Number.MAX_SAFE_INTEGER;
+    const rDen = r ? parseInt(r[2], 10) : Number.MAX_SAFE_INTEGER;
+
+    // angka Mbps
+    const m = /\((\d+)\s*Mbps\)/i.exec(clean);
+    const mbps = m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER;
+
+    return { base, rNum, rDen, mbps };
+}
+
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('kategoriSelect')) {
+        const kategoriSelect = e.target;
+        const produkSelect = kategoriSelect.closest('.produkItem').querySelector('.produkSelect');
+        const kategoriId = kategoriSelect.value;
+
+        produkSelect.innerHTML = '<option value="">-- Pilih Produk --</option>';
+
+        const semuaProduk = @json($produk);
+
+        // Filter & urutkan produk: Mbps naik, lalu nama
+        // Urut: base/brand (ASTINET) -> ratio (1:1, 1:2, 1:4) -> Mbps naik
+const produkTerkait = semuaProduk
+    .filter(p => p.kategori_id == kategoriId)
+    .sort((a, b) => {
+        const A = parseKeys(a.nama_produk);
+        const B = parseKeys(b.nama_produk);
+
+        // 1) brand/base (ASTINET, dst)
+        if (A.base !== B.base) {
+            return A.base.localeCompare(B.base, 'id', { numeric: true, sensitivity: 'base' });
+        }
+        // 2) ratio: 1:1 -> 1:2 -> 1:4
+        if (A.rNum !== B.rNum) return A.rNum - B.rNum;
+        if (A.rDen !== B.rDen) return A.rDen - B.rDen;
+
+        // 3) Mbps naik
+        if (A.mbps !== B.mbps) return A.mbps - B.mbps;
+
+        // 4) tie-breaker
+        return a.nama_produk.localeCompare(b.nama_produk, 'id', { numeric: true, sensitivity: 'base' });
+    });
+
+
+        produkTerkait.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.textContent = p.nama_produk;
+            option.dataset.harga = p.harga;
+            option.dataset.kategori = p.kategori_id;
+            option.dataset.diskonmaks = p.kategori?.diskon_maks ?? 0;
+            option.dataset.psb = p.kategori?.psb ?? 0;
+            option.dataset.diskonpsb = p.kategori?.diskon_psb ?? 0;
+            produkSelect.appendChild(option);
+        });
+
+        hitungTotal();
+    }
+});
 
 function hitungTotal() {
     let totalAwalLayanan = 0; // total tarif layanan sebelum diskon

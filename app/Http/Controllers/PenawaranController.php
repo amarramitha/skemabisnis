@@ -4,15 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use App\Models\Penawaran;
+use App\Models\KategoriProduk;
 use Illuminate\Http\Request;
 
 class PenawaranController extends Controller
 {
     public function create()
-    {
-        $produk = Produk::with('kategori')->get();
-        return view('admin.penawaran', compact('produk'));
-    }
+{
+    $kategori = KategoriProduk::orderBy('nama_kategori', 'asc')->get();
+
+    // optional: urutkan produk -> kategori A–Z lalu Mbps naik
+    $produk = Produk::with('kategori')->get()->sortBy([
+        fn($p) => $p->kategori->nama_kategori ?? '',
+        function ($p) {
+            if (preg_match('/\((\d+)\s*Mbps\)/i', $p->nama_produk, $m)) {
+                return (int) $m[1];
+            }
+            return PHP_INT_MAX; // tanpa Mbps taruh bawah
+        },
+        fn($p) => $p->nama_produk, // tie-breaker
+    ])->values();
+
+
+    return view('admin.penawaran', compact('kategori', 'produk'));
+}
+
+
+
 
     public function index()
     {
